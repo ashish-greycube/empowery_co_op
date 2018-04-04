@@ -57,7 +57,7 @@ select parent from `tabDynamic Link` where link_doctype='Customer' and docstatus
 
 @frappe.whitelist()
 def add_party_link(custname, suppname,isLinked):
-	if custname !=None and suppname !=None and isLinked ==0:		
+	if ((custname !=None) and (suppname !=None) and (isLinked == '0')):	
 		supplier=frappe.get_doc('Supplier', suppname)
 		supplier.append('links', dict(link_doctype='Customer', link_name=custname))
 		supplier.save(ignore_permissions=True)	
