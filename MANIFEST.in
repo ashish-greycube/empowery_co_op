@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include empowery_co_op *.css
+recursive-include empowery_co_op *.csv
+recursive-include empowery_co_op *.html
+recursive-include empowery_co_op *.ico
+recursive-include empowery_co_op *.js
+recursive-include empowery_co_op *.json
+recursive-include empowery_co_op *.md
+recursive-include empowery_co_op *.png
+recursive-include empowery_co_op *.py
+recursive-include empowery_co_op *.svg
+recursive-include empowery_co_op *.txt
+recursive-exclude empowery_co_op *.pyc
