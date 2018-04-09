@@ -8,7 +8,7 @@ def get_data():
 				{
 					"type": "report",
 					"name": "Linked Customer",
-				}
+				},
 				{
 					"type": "report",
 					"name": "Linked Supplier",
