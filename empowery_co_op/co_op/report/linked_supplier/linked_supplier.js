@@ -5,11 +5,18 @@ frappe.query_reports["Linked Supplier"] = {
 	"filters": [{
 		"fieldname": "customer",
 		"label": __("Customer"),
-		"fieldtype": "Link",
-		"options": "Customer",
-		"read_only": 1
-	}, ],
+		"fieldtype": "Select",
+		"options": "Customer"
+		
+	},
+
+
+],
 	onload: (report) => {
+		report.page.add_inner_button(__("Back to Portal"), function() {
+			location.href = 'me'
+		});
+		
 		get_session_customer();
 
 		function get_session_customer() {
@@ -19,7 +26,23 @@ frappe.query_reports["Linked Supplier"] = {
 					useremail: frappe.session.user_email
 				},
 				callback: function (data) {
-					frappe.query_report_filters_by_name.customer.set_input(data.message[0].link_name);
+					if (data.message != undefined){
+					var filter = frappe.query_report_filters_by_name.customer
+					var option_values=[];
+					data.message.forEach(element => {
+						option_values.push(element.link_name);
+						
+					});
+					filter.df.options=option_values
+					filter.set_input(option_values[0]);
+					filter.refresh();	
+				}
+				else{
+					var filter = frappe.query_report_filters_by_name.customer
+					filter.df.read_only=1;
+					filter.refresh();
+					frappe.msgprint("Login user is not a valid empowery customer")
+				}				
 				}
 			})
 		}
@@ -56,3 +79,4 @@ frappe.query_reports["Linked Supplier"] = {
 
 	},
 }
+

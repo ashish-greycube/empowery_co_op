@@ -36,7 +36,7 @@ app_license = "MIT"
 
 # application home page (will override Website Settings)
 # home_page = "login"
-
+on_session_creation = "empowery_co_op.api.set_portal_homepage"
 # website user home page (by Role)
 # role_home_page = {
 #	"Role": "home_page"
@@ -120,3 +120,13 @@ app_license = "MIT"
 # 	"frappe.desk.doctype.event.event.get_events": "empowery_co_op.event.get_events"
 # }
 
+fixtures = [
+    	{
+		"dt":"Custom Script",
+		"filters":[
+			["name", "in", [
+			"Supplier-Client","Customer-Client"]],
+		]
+	},
+
+]

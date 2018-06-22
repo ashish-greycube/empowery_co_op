@@ -1,0 +1,20 @@
+[
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Supplier", 
+  "modified": "2018-06-22 05:34:54.637453", 
+  "name": "Supplier-Client", 
+  "script": "frappe.ui.form.on('Supplier', {\n\tonload: function (doc, dt, dn) {\n\t\tfor (i = 0; i < cur_frm.doc.links.length; i++) {\n\t\t\tvar cdate = frappe.model.get_value('Dynamic Link', cur_frm.doc.links[i].name, 'creation');\n\t\t\t\n\t\t\tfrappe.model.set_value('Dynamic Link', cur_frm.doc.links[i].name, 'link_date', frappe.utils.formatdate(cdate, \"MM-dd-yyyy\"));\n\t\t}\n\t}\n});", 
+  "script_type": "Client"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Customer", 
+  "modified": "2018-06-19 22:46:37.046114", 
+  "name": "Customer-Client", 
+  "script": "frappe.ui.form.on('Customer', {\n    onload: function (doc, dt, dn) {\n\n        frappe.call({\n            method: \"empowery_co_op.api.get_linked_supplier\",\n            args: {\n                custname: cur_frm.doc.customer_name,\n            },\n            callback: function (r) {\n                if (!r.message) {\n                    const html = `There is no supplier linked data for `+cur_frm.doc.customer_name\n                    $(cur_frm.fields_dict.linked_supplier_data.wrapper).html(html);\n                }\n                const linked_supplier_data = r.message;\n                console.log(r.message)\n                console.log(linked_supplier_data)\n                if (linked_supplier_data) {\n                    const html = `\n                        <table class=\"table table-bordered\">\n                            <thead><tr><th>${__(\"Type\")}</th><th>${__(\"Suppier Name\")}</th><th>${__(\"Created Date\")}</th></tr></thead>\n                            <tbody>\n                                ${linked_supplier_data.map(\n                                    c => `<tr><td>${c.parenttype}</td><td>${c.parent}</td>\n                                    <td>${c.creation}</td></tr>`\n                                ).join('')}\n                            </tbody>\n                        </table>`\n                    $(cur_frm.fields_dict.linked_supplier_data.wrapper).html(html);\n                }\n            }\n        });\n    }\n});", 
+  "script_type": "Client"
+ }
+]

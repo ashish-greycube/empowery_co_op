@@ -9,8 +9,15 @@ frappe.query_reports["Linked Customer"] = {
 		"fieldtype": "Link",
 		"options": "Supplier",
 		"read_only": 1,
-	}, ],
+	}
+],
 	onload: (report) => {
+		report.page.add_inner_button(__("Back to Portal"), function() {
+			location.href = 'me'
+		});
+
+	
+
 		get_session_supplier();
 
 		function get_session_supplier() {
@@ -22,7 +29,14 @@ frappe.query_reports["Linked Customer"] = {
 					useremail: frappe.session.user_email
 				},
 				callback: function (data) {
-					frappe.query_report_filters_by_name.supplier.set_input(data.message[0].link_name);
+					console.log(data)
+					if (data.message != undefined){
+					frappe.query_report_filters_by_name.supplier.set_input(data.message[0].link_name);}
+					else{
+						frappe.msgprint("Login user is not a valid empowery supplier")
+						frappe.query_report_filters_by_name.supplier.set_input("");
+						filter.refresh();
+					}
 
 				}
 			})

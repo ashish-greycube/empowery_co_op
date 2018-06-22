@@ -3,10 +3,14 @@
 
 from __future__ import unicode_literals
 import frappe
+from frappe.contacts.doctype.address.address import get_address_display,get_default_address
 
-def execute(filters=None):
+def execute(filters):
 	columns, data = [], []
 	columns = get_columns()
+
+	if filters == {}:
+		return columns, data
 
 	linked_list = get_linked(filters)
 	nonlinked_list = get_nonlinked(filters)
@@ -15,14 +19,14 @@ def execute(filters=None):
 	for d in linked_list:
 		row = []
 		linked=1
-		row = [d.parent,linked,"""
+		row = [d.parent,get_primary_address(d.parent),linked,"""
       <input type="button"  class="btn btn-primary  btn-xs" value="Remove" onclick="frappe.remove_party_link('%s', '%s')">"""% (customer,d.parent)]
 		data.append(row)
 
 	for d in nonlinked_list:
 		row = []
 		linked=0
-		row = [d.name,linked,"""
+		row = [d.name,get_primary_address(d.name),linked,"""
     <input type="button"  class="btn btn-primary  btn-xs" value="Add" onclick="frappe.add_party_link('%s', '%s', '%s')">"""% (customer,d.name,linked)]
 		data.append(row)
 
@@ -30,9 +34,10 @@ def execute(filters=None):
 
 def get_columns():
 	columns = [
-		("Supplier") + ":Data:120",
-		("Linked") + ":Check:120",
-		("Action") + ":HTML:120"
+		("Supplier") + ":Data:200",
+		("Contact Detail") + ":HTML:700",
+		("Linked") + ":Check:50",
+		("Action") + ":HTML:70"
 	]
 	return columns
 
@@ -73,3 +78,12 @@ def remove_party_link(custname, suppname):
 def get_session_customer(useremail):
  	return frappe.db.sql("""select link_name from `tabDynamic Link` where link_doctype="Customer" and parenttype="Contact" and parent in(
  select name from `tabContact` where user = %s)""" ,useremail, as_dict=1)
+
+@frappe.whitelist()
+def get_primary_address(suppname):
+	add =  get_address_display(get_default_address('Supplier',suppname))
+	
+	if add is not None:
+		return add.replace("<br>",'&nbsp;')
+	else:
+		return add

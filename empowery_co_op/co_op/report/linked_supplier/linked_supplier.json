@@ -7,7 +7,7 @@
  "doctype": "Report", 
  "idx": 0, 
  "is_standard": "Yes", 
- "modified": "2018-04-10 08:38:54.112147", 
+ "modified": "2018-06-22 05:15:10.404325", 
  "modified_by": "Administrator", 
  "module": "CO-OP", 
  "name": "Linked Supplier", 
@@ -17,10 +17,10 @@
  "report_type": "Script Report", 
  "roles": [
   {
-   "role": "System Manager"
+   "role": "Coop-Customer"
   }, 
   {
-   "role": "Coop-Customer"
+   "role": "System Manager"
   }
  ]
 }
