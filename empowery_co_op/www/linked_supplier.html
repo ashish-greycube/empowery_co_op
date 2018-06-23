@@ -1,4 +1,13 @@
 
+<style>
+    .cell-title {
+      font-weight: bold;
+    }
+
+    .cell-effort-driven {
+      text-align: center;
+    }      
+  </style>
 
 <h3>My Linked Supplier</h3>
 <div id="myGrid"  style="width:100%;height:500px;"></div>
@@ -7,11 +16,16 @@
       function formatter(row, cell, value, columnDef, dataContext) {
       return value;
   }
+  function CheckmarkFormatter(row, cell, value, columnDef, dataContext) {
+    return value ? "<img src='tick.png'>" : "";
+  }
     var grid;
     var columns = [
+    {id: "sel", name: "#", field: "num", behavior: "select", cssClass: "cell-selection", width: 40, cannotTriggerInsert: true, resizable: false, selectable: false },
+
         { id: "supplier", name: "Supplier", width: 200, minWidth: 200, maxWidth: 300, field: "supplier" },
         { id: "contact_detail", width: 700, minWidth: 700, maxWidth: 750, name: "Contact Detail", field: "contact_detail" ,formatter: formatter},
-        {id: "linked", width: 50, minWidth: 50, maxWidth: 80, name: "Linked", width: 80, minWidth: 20, maxWidth: 80, cssClass: "cell-effort-driven", field: "linked",formatter: Slick.Formatters.Checkmark},
+        {id: "linked", width: 50, minWidth: 50, maxWidth: 80, name: "Linked", width: 80, minWidth: 20, maxWidth: 80, cssClass: "cell-effort-driven", field: "linked",formatter: CheckmarkFormatter},
         { id: "action", width: 70, minWidth: 70, maxWidth: 100,  name: "Action", field: "action",formatter: formatter }
 
 ];
@@ -65,6 +79,7 @@
                         for (var i = 0; i < data.length; i++) {
             console.log(data[i])
             data[i] = {
+                num : i+1,
                 supplier: data[i][0],
                 contact_detail: data[i][1],
                 linked: data[i][2],
