@@ -42,6 +42,25 @@ on_session_creation = "empowery_co_op.api.set_portal_homepage"
 #	"Role": "home_page"
 # }
 
+web_include_css = [
+    "/assets/frappe/js/lib/slickgrid/slick.grid.css",
+    "/assets/frappe/js/lib/slickgrid/slick-default-theme.css",
+    "/assets/frappe/css/slickgrid.css"
+]
+
+web_include_js = [
+    "/assets/frappe/js/lib/slickgrid/jquery.event.drag.js",
+    "/assets/frappe/js/lib/slickgrid/plugins/slick.cellrangedecorator.js",
+    "/assets/frappe/js/lib/slickgrid/plugins/slick.cellrangeselector.js",
+    "/assets/frappe/js/lib/slickgrid/plugins/slick.cellselectionmodel.js",
+    "/assets/frappe/js/lib/slickgrid/plugins/slick.cellexternalcopymanager.js",
+    "/assets/frappe/js/lib/slickgrid/slick.core.js",
+    "/assets/frappe/js/lib/slickgrid/slick.grid.js",
+    "/assets/frappe/js/lib/slickgrid/slick.formatters.js",
+    "/assets/frappe/js/lib/slickgrid/slick.dataview.js"
+
+]
+
 # Website user home page (by function)
 # get_website_user_home_page = "empowery_co_op.utils.get_home_page"
 

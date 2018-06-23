@@ -1,0 +1,76 @@
+<h3>My Linked Customer</h3>
+<div id="myGrid"  style="width:600px;height:500px;"></div>
+
+<script>
+//       function formatter(row, cell, value, columnDef, dataContext) {
+//       return value;
+//   }
+    var grid;
+    var columns = [
+        { id: "customer", name: "Customer", field: "customer" },
+        { id: "customer_primary_contact", name: "Primary Contact", field: "customer_primary_contact" },
+        { id: "mobile_no", name: "Mobile No", field: "mobile_no" },
+        { id: "email_id", name: "Email ID", field: "email_id" },
+        {id: "linked", name: "Linked", width: 80, minWidth: 20, maxWidth: 80, cssClass: "cell-effort-driven", field: "linked"}
+    ];
+
+    var options = {
+        enableCellNavigation: true,
+        enableColumnReorder: false
+    };
+    var data = [];
+    frappe.ready(function () {
+        console.log(frappe.session.user)
+        frappe.call({
+				method: "empowery_co_op.linked_customer.execute",
+				args: {
+					useremail: frappe.session.user
+				},
+				callback: function (rdata) {
+					console.log(rdata)
+					if (rdata.message != undefined){
+
+                        data=rdata.message
+                        for (var i = 0; i < data.length; i++) {
+            console.log(data[i])
+            data[i] = {
+                customer: data[i][0],
+                customer_primary_contact: data[i][1],
+                mobile_no: data[i][2],
+                email_id: data[i][3],
+                linked: data[i][4]
+            };
+        }
+        grid = new Slick.Grid("#myGrid", data, columns, options);
+                    
+                    }
+                        else{
+						frappe.msgprint("Login user is not a valid empowery supplier")
+	
+					}
+
+				}
+            })
+            
+
+        
+
+    })
+</script>
+<style>
+        .cell-title {
+          font-weight: bold;
+        }
+        .cell-effort-driven {
+          text-align: center;
+        }
+        .green {
+          background-color: #aaffaa;
+        }      
+        .red {
+          background-color: #ff7777;
+        }      
+        .orange {
+          background-color: #ffbb66;
+        }      
+      </style>

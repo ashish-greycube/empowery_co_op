@@ -1,0 +1,89 @@
+
+
+<h3>My Linked Supplier</h3>
+<div id="myGrid"  style="width:100%;height:500px;"></div>
+
+<script>
+      function formatter(row, cell, value, columnDef, dataContext) {
+      return value;
+  }
+    var grid;
+    var columns = [
+        { id: "supplier", name: "Supplier", width: 200, minWidth: 200, maxWidth: 300, field: "supplier" },
+        { id: "contact_detail", width: 700, minWidth: 700, maxWidth: 750, name: "Contact Detail", field: "contact_detail" ,formatter: formatter},
+        {id: "linked", width: 50, minWidth: 50, maxWidth: 80, name: "Linked", width: 80, minWidth: 20, maxWidth: 80, cssClass: "cell-effort-driven", field: "linked",formatter: Slick.Formatters.Checkmark},
+        { id: "action", width: 70, minWidth: 70, maxWidth: 100,  name: "Action", field: "action",formatter: formatter }
+
+];
+
+    var options = {
+        enableCellNavigation: true,
+        enableColumnReorder: false
+    };
+    var data = [];
+    frappe.add_party_link = function (custname, suppname, isLinked) {
+			frappe.call({
+				method: "empowery_co_op.linked_supplier.add_party_link",
+				args: {
+					custname: custname,
+					suppname: suppname,
+					isLinked: isLinked
+
+				},
+				callback: function (data) {
+          location.reload(); 
+				}
+			})
+		}
+		frappe.remove_party_link = function (custname, suppname) {
+			frappe.call({
+
+				method: "empowery_co_op.linked_supplier.remove_party_link",
+				args: {
+					custname: custname,
+					suppname: suppname
+
+				},
+				callback: function (data) {
+          location.reload(); 
+
+				}
+			})
+		}
+    frappe.ready(function () {
+        console.log(frappe.session.user)
+        frappe.call({
+				method: "empowery_co_op.linked_supplier.execute",
+				args: {
+					useremail: frappe.session.user
+				},
+				callback: function (rdata) {
+					console.log(rdata)
+					if (rdata.message != undefined){
+
+                        data=rdata.message
+                        for (var i = 0; i < data.length; i++) {
+            console.log(data[i])
+            data[i] = {
+                supplier: data[i][0],
+                contact_detail: data[i][1],
+                linked: data[i][2],
+                action: data[i][3]
+            };
+        }
+        grid = new Slick.Grid("#myGrid", data, columns, options);
+                    
+                    }
+                        else{
+						frappe.msgprint("Login user is not a valid empowery supplier")
+	
+					}
+
+				}
+            })
+            
+
+        
+
+    });
+</script>
