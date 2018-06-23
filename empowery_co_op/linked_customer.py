@@ -6,15 +6,16 @@ import frappe
 
 @frappe.whitelist()
 def execute(useremail):
+	columns, data = [], []
 	
 	suppname=get_session_supplier(useremail)
-	print("-------------------------------------")
-	suppname= suppname[0]['supplier']
-	columns, data = [], []
-	columns = get_columns()
-	if suppname=={}:
+	if suppname==[]:
 		print data
 		return  data
+	print("-------------------------------------")
+	suppname= suppname[0]['supplier']
+	columns = get_columns()
+
 
 	
 

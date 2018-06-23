@@ -1,9 +1,107 @@
-{% extends "templates/web.html" %}
-{% block breadcrumbs %}
-	{% include "templates/includes/breadcrumbs.html" %}
-{% endblock %}
-{% block header %}
-{% endblock %}
-{% block page_content %}
-<div>{{ description }}</div>
+{% extends "templates/web.html" %} {% block breadcrumbs %} {% include "templates/includes/breadcrumbs.html" %} {% endblock%} 
+{% block header %}{% endblock %} {% block page_content %}
+<style>
+    .myGrid {
+        background: white;
+        outline: 0;
+        border: 1px solid gray;
+    }
+    .cell-effort-driven {
+        text-align: center;
+    }
+</style>    
+<table width="100%">
+    <tr><td valign="top" width="100%">
+        <div><h3>My Linked Supplier</h3></div>
+        <hr/>
+            <div style="padding:6px;">
+                <label>My Company:</label>
+                <select id="customer_companies" onchange="getGrid()" style="width:100px;"></select>
+                <a href="/me">Back to Main Portal</a>
+                <br/><br/>
+                <div id="myGrid" style="width:1090px" class="my-grid"></div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<script>
+function getGrid() {
+    var customer_companies = document.getElementById("customer_companies").value;
+    console.log(customer_companies)    
+}
+function formatter(row, cell, value, columnDef, dataContext) {return value; }
+function CheckmarkFormatter(row, cell, value, columnDef, dataContext) {return value ? "<img src='tick.png'>" : "";}
+function get_company_list(){
+          frappe.call({
+              method:'empowery_co_op.linked_supplier.get_session_customer',
+              args:{useremail:frappe.session.user},
+              callback: function(r) {
+							if(r.message) {
+                                data=r.message
+                                var selectBox = document.getElementById('customer_companies');
+                                for(var i = 0, l = data.length; i < l; i++){
+                                    var option = data[i];
+                                    if (i==0) {option.selected=1} else {option.selected=0}
+                                        selectBox.options.add( new Option(option.customer, option.customer, option.selected) );
+                                }}}});}
+var grid;
+var columns = [
+        {id: "sel", name: "#", field: "num",  width: 40},
+        { id: "supplier", name: "Supplier", width: 200, minWidth: 200, maxWidth: 300, field: "supplier" },
+        { id: "contact_detail", width: 700, minWidth: 700, maxWidth: 750, name: "Contact Detail", field: "contact_detail" ,formatter: formatter},
+        {id: "linked", width: 50, minWidth: 50, maxWidth: 80, name: "Linked", width: 80, minWidth: 20, maxWidth: 80, cssClass: "cell-effort-driven", field: "linked",formatter: CheckmarkFormatter},
+        { id: "action", width: 70, minWidth: 70, maxWidth: 100,  name: "Action", field: "action",formatter: formatter } ];
+    
+var options = {
+            enableCellNavigation: true,
+            enableColumnReorder: false,
+            autoHeight: true
+        };
+var data = [];
+
+frappe.add_party_link = function (custname, suppname, isLinked) {
+                frappe.call({
+                    method: "empowery_co_op.linked_supplier.add_party_link",
+                    args: {
+                        custname: custname,
+                        suppname: suppname,
+                        isLinked: isLinked
+                    },
+                    callback: function (data) {location.reload(); 
+                    }})}
+frappe.remove_party_link = function (custname, suppname) {
+                frappe.call({
+                    method: "empowery_co_op.linked_supplier.remove_party_link",
+                    args: {
+                        custname: custname,
+                        suppname: suppname
+                    },
+                    callback: function (data) {location.reload(); 
+                    }})}
+
+frappe.ready(function () {
+            console.log(frappe.session.user)
+            get_company_list();
+            frappe.call({
+                    method: "empowery_co_op.linked_supplier.execute",
+                    args: {
+                        useremail: frappe.session.user
+                    },
+                    callback: function (rdata) {
+                        if (rdata.message != undefined){
+                            data=rdata.message
+                            for (var i = 0; i < data.length; i++) {
+                                data[i] = {
+                                    num : i+1,
+                                    supplier: data[i][0],
+                                    contact_detail: data[i][1],
+                                    linked: data[i][2],
+                                    action: data[i][3]
+                                };}      
+                             grid = new Slick.Grid("#myGrid", data, columns, options); }
+                        else{frappe.msgprint("Login user is not a valid empowery supplier")}
+                    }}); });
+
+</script>
 {% endblock %}

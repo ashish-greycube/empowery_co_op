@@ -6,14 +6,18 @@ import frappe
 from frappe.contacts.doctype.address.address import get_address_display,get_default_address
 
 @frappe.whitelist()
-def execute(useremail):
-	useremail=get_session_customer(useremail)
-	customer_company=useremail[0]["customer"]
+def execute(useremail,customer_company=None):
 	columns, data = [], []
+
+	useremail=get_session_customer(useremail)
+	if useremail == []:
+		return  data
+	if customer_company==None:
+		customer_company=useremail[0]["customer"]
+	
 	columns = get_columns()
 
-	if customer_company == {}:
-		return  data
+
 
 	linked_list = get_linked(customer_company)
 	nonlinked_list = get_nonlinked(customer_company)
