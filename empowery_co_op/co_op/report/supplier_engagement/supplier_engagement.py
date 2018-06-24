@@ -36,7 +36,7 @@ def get_color_codes():
 	color_codes['red_start']=frappe.db.get_single_value('Supplier Engagement Report Settings', 'red_zone_start_value')
 	color_codes['color_2']=frappe.db.get_single_value('Supplier Engagement Report Settings', 'color_2')
 	color_codes['yellow_start']=frappe.db.get_single_value('Supplier Engagement Report Settings', 'yellow_zone_start_value')
+	color_codes['yellow_end']=frappe.db.get_single_value('Supplier Engagement Report Settings', 'yellow_zone_end_value')
 	color_codes['color_3']=frappe.db.get_single_value('Supplier Engagement Report Settings', 'color_3')
-	color_codes['green_start']=frappe.db.get_single_value('Supplier Engagement Report Settings', 'green_zone_start_value')
 	color_codes['green_end']=frappe.db.get_single_value('Supplier Engagement Report Settings', 'green_zone_end_value')
 	return color_codes

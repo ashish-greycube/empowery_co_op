@@ -16,7 +16,7 @@
         <hr/>
             <div style="padding:6px;">
                 <label>My Company:</label>
-                <select id="customer_companies" onchange="getGrid()" >
+                <select id="customer_companies" onchange="fill_grid()" >
                 </select>
                 <label style="float:right;"><a href="/me"> ☚ Back to Main Portal</a></label>
                 <br/><br/>
@@ -27,8 +27,9 @@
 </table>
 
 <script>
-function getGrid() {
-
+function formatter(row, cell, value, columnDef, dataContext) {return value; }
+function CheckmarkFormatter(row, cell, value, columnDef, dataContext) {return value ? "<img src='tick.png'>" : '<i class="octicon octicon-x"></i>';}
+function fill_grid(){
     var customer_companies = document.getElementById("customer_companies").value;
     frappe.call({
                     method: "empowery_co_op.linked_supplier.execute",
@@ -49,10 +50,8 @@ function getGrid() {
                                 };}      
                              grid = new Slick.Grid("#myGrid", data, columns, options); }
                         else{frappe.msgprint("Logged in user is not a valid empowery customer")}
-                    }}); 
+                    }});
 }
-function formatter(row, cell, value, columnDef, dataContext) {return value; }
-function CheckmarkFormatter(row, cell, value, columnDef, dataContext) {return value ? "<img src='tick.png'>" : '<i class="octicon octicon-x"></i>';}
 function get_company_list(){
           frappe.call({
               method:'empowery_co_op.linked_supplier.get_session_customer',
@@ -84,47 +83,37 @@ var options = {
 var data = [];
 
 frappe.add_party_link = function (custname, suppname, isLinked) {
+    
+    var customer_companies = document.getElementById("customer_companies").value;
                 frappe.call({
                     method: "empowery_co_op.linked_supplier.add_party_link",
                     args: {
-                        custname: custname,
+                        custname: customer_companies,
                         suppname: suppname,
                         isLinked: isLinked
                     },
-                    callback: function (data) {location.reload(); 
+                    callback: function (data) {
+                        document.getElementById("customer_companies").value=customer_companies;
+                        fill_grid();
                     }})}
 frappe.remove_party_link = function (custname, suppname) {
+    var customer_companies = document.getElementById("customer_companies").value;
                 frappe.call({
                     method: "empowery_co_op.linked_supplier.remove_party_link",
                     args: {
-                        custname: custname,
+                        custname: customer_companies,
                         suppname: suppname
                     },
-                    callback: function (data) {location.reload(); 
+                    callback: function (data) {
+                        document.getElementById("customer_companies").value=customer_companies;
+                        fill_grid();
                     }})}
 
 frappe.ready(function () {
-            console.log(frappe.session.user)
-            get_company_list();
-            frappe.call({
-                    method: "empowery_co_op.linked_supplier.execute",
-                    args: {
-                        useremail: frappe.session.user
-                    },
-                    callback: function (rdata) {
-                        if (rdata.message != undefined){
-                            data=rdata.message
-                            for (var i = 0; i < data.length; i++) {
-                                data[i] = {
-                                    num : i+1,
-                                    supplier: data[i][0],
-                                    contact_detail: data[i][1],
-                                    linked: data[i][2],
-                                    action: data[i][3]
-                                };}      
-                             grid = new Slick.Grid("#myGrid", data, columns, options); }
-                        else{frappe.msgprint("Logged in user is not a valid empowery customer")}
-                    }}); });
+            var customer_companies = document.getElementById("customer_companies").value;
+            if (customer_companies==''){ get_company_list();}
+            fill_grid();
+                     });
 
 </script>
 {% endblock %}

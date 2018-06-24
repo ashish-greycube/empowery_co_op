@@ -29,11 +29,11 @@ frappe.query_reports["Supplier Engagement"] = {
 
         if (per_of_engagement != null || per_of_engagement != '') {
 
-          if ((per_of_engagement >= parseFloat(color_codes.red_start)) && (per_of_engagement <= parseFloat(color_codes.yellow_start))) {
+          if ((per_of_engagement >= 0.0) && (per_of_engagement <= parseFloat(color_codes.yellow_start))) {
             value = `<p style='margin:0px;padding-left:5px;background-color:${color_codes.color_1}!important;'>${value}</p>`
-          } else if (per_of_engagement > parseFloat(color_codes.yellow_start) && per_of_engagement <= parseFloat(color_codes.green_start)) {
+          } else if (per_of_engagement > parseFloat(color_codes.yellow_start) && per_of_engagement <= parseFloat(color_codes.yellow_end)) {
             value = `<p style='margin:0px;padding-left:5px;background-color:${color_codes.color_2}!important;'>${value}</p>`
-          } else if (per_of_engagement > parseFloat(color_codes.green_start) && per_of_engagement <= parseFloat(color_codes.green_end)) {
+          } else if (per_of_engagement > parseFloat(color_codes.yellow_end) && per_of_engagement <= 100.00) {
             value = `<p style='margin:0px;padding-left:5px;background-color:${color_codes.color_3}!important;'>${value}</p>`
           }
           return value;

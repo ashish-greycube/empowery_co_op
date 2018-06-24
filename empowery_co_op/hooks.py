@@ -144,7 +144,7 @@ fixtures = [
 		"dt":"Custom Script",
 		"filters":[
 			["name", "in", [
-			"Supplier-Client","Customer-Client"]],
+			"Supplier-Client","Customer-Client","Supplier Engagement Report Settings-Client"]],
 		]
 	},
 
