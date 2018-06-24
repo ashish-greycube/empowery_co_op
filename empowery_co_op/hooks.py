@@ -36,7 +36,7 @@ app_license = "MIT"
 
 # application home page (will override Website Settings)
 # home_page = "login"
-on_session_creation = "empowery_co_op.api.set_portal_homepage"
+# on_session_creation = "empowery_co_op.api.set_portal_homepage"
 # website user home page (by Role)
 # role_home_page = {
 #	"Role": "home_page"

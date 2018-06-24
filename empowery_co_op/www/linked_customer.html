@@ -1,76 +1,87 @@
-<h3>My Linked Customer</h3>
-<div id="myGrid"  style="width:600px;height:500px;"></div>
+{% extends "templates/web.html" %} {% block breadcrumbs %} {% include "templates/includes/breadcrumbs.html" %} {% endblock%} 
+{% block header %}{% endblock %} {% block page_content %}
+<style>
+    .myGrid {
+        background: white;
+        outline: 0;
+        border: 1px solid gray;
+    }
+    .cell-effort-driven {
+        text-align: center;
+    }
+</style>    
+<table >
+    <tr><td valign="top">
+        <div><h3>My Linked Customer</h3></div>
+        <hr/>
+            <div style="padding:6px;">
+                <label>Supplier Name:</label>
+                <select id="supplier_companies"></select>
+                <label style="float:right;"><a href="/me"> ☚ Back to Main Portal</a></label>
+                <br/><br/>
+                <div id="myGrid" style="width:970px" class="my-grid"></div>
+            </div>
+        </td>
+    </tr>
+</table>
 
 <script>
-//       function formatter(row, cell, value, columnDef, dataContext) {
-//       return value;
-//   }
-    var grid;
-    var columns = [
-        { id: "customer", name: "Customer", field: "customer" },
-        { id: "customer_primary_contact", name: "Primary Contact", field: "customer_primary_contact" },
-        { id: "mobile_no", name: "Mobile No", field: "mobile_no" },
-        { id: "email_id", name: "Email ID", field: "email_id" },
-        {id: "linked", name: "Linked", width: 80, minWidth: 20, maxWidth: 80, cssClass: "cell-effort-driven", field: "linked"}
-    ];
+function formatter(row, cell, value, columnDef, dataContext) {return value; }
+function CheckmarkFormatter(row, cell, value, columnDef, dataContext) {return value ? "<img src='tick.png'>" : '<i class="octicon octicon-x"></i>';}
+function get_company_list(){
+          frappe.call({
+              method:'empowery_co_op.linked_customer.get_session_supplier',
+              args:{useremail:frappe.session.user},
+              callback: function(r) {
+							if(r.message) {
+                                data=r.message
+                                console.log(data)
+                                var selectBox = document.getElementById('supplier_companies');
+                                for(var i = 0, l = data.length; i < l; i++){
+                                    var option = data[i];
+                                    if (i==0) {option.selected=1} else {option.selected=0}
+                                        selectBox.options.add( new Option(option.supplier, option.supplier, option.selected) );
+                                }
+                                if (data.length==1) {selectBox.disabled = true}
+                            }}});}
+var grid;
+var columns = [
+        {id: "sel", name: "#", field: "num",  width: 40},
+        { id: "customer", name: "Customer", field: "customer", width: 270 },
+        { id: "customer_primary_contact", name: "Primary Contact", field: "customer_primary_contact",width: 220 },
+        { id: "mobile_no", name: "Mobile No", field: "mobile_no" ,width: 130},
+        { id: "email_id", name: "Email ID", field: "email_id",width: 230 },
+        {id: "linked", width: 50, minWidth: 50, maxWidth: 80, name: "Linked", width: 80, minWidth: 20, maxWidth: 80, cssClass: "cell-effort-driven", field: "linked",formatter: CheckmarkFormatter}]; 
+var options = {
+            enableCellNavigation: true,
+            enableColumnReorder: false,
+            autoHeight: true
+        };
+var data = [];
 
-    var options = {
-        enableCellNavigation: true,
-        enableColumnReorder: false
-    };
-    var data = [];
-    frappe.ready(function () {
-        console.log(frappe.session.user)
-        frappe.call({
-				method: "empowery_co_op.linked_customer.execute",
-				args: {
-					useremail: frappe.session.user
-				},
-				callback: function (rdata) {
-					console.log(rdata)
-					if (rdata.message != undefined){
+frappe.ready(function () {
+            console.log(frappe.session.user)
+            get_company_list();
+            frappe.call({
+                    method: "empowery_co_op.linked_customer.execute",
+                    args: {
+                        useremail: frappe.session.user
+                    },
+                    callback: function (rdata) {
+                        if (rdata.message != undefined){
+                            data=rdata.message
+                            for (var i = 0; i < data.length; i++) {
+                                data[i] = {
+                                    num : i+1,
+                                    customer: data[i][0],
+                                    customer_primary_contact: data[i][1],
+                                    mobile_no: data[i][2],
+                                    email_id: data[i][3],
+                                    linked: data[i][4]
+                                };}      
+                             grid = new Slick.Grid("#myGrid", data, columns, options); }
+                        else{frappe.msgprint("Logged in user is not a valid empowery supplier")}
+                    }}); });
 
-                        data=rdata.message
-                        for (var i = 0; i < data.length; i++) {
-            console.log(data[i])
-            data[i] = {
-                customer: data[i][0],
-                customer_primary_contact: data[i][1],
-                mobile_no: data[i][2],
-                email_id: data[i][3],
-                linked: data[i][4]
-            };
-        }
-        grid = new Slick.Grid("#myGrid", data, columns, options);
-                    
-                    }
-                        else{
-						frappe.msgprint("Login user is not a valid empowery supplier")
-	
-					}
-
-				}
-            })
-            
-
-        
-
-    })
 </script>
-<style>
-        .cell-title {
-          font-weight: bold;
-        }
-        .cell-effort-driven {
-          text-align: center;
-        }
-        .green {
-          background-color: #aaffaa;
-        }      
-        .red {
-          background-color: #ff7777;
-        }      
-        .orange {
-          background-color: #ffbb66;
-        }      
-      </style>
+{% endblock %}

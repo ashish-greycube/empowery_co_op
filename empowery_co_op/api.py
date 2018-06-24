@@ -13,4 +13,8 @@ def set_portal_homepage(login_manager):
 
 @frappe.whitelist()
 def get_linked_supplier(custname):
- 	return frappe.db.sql("""select parenttype,parent,DATE_FORMAT(creation,'%%m-%%d-%%Y') as creation from `tabDynamic Link` where parenttype='Supplier' and docstatus=0 and parentfield='links' and link_doctype='Customer' and link_name = %s""" ,custname, as_dict=1) or 0
+ 	return frappe.db.sql("""select parenttype,parent,DATE_FORMAT(creation,'%%M-%%d-%%Y') as join_date from `tabDynamic Link` where parenttype='Supplier' and docstatus=0 and parentfield='links' and link_doctype='Customer' and link_name = %s order by join_date desc""" ,custname, as_dict=1) or 0
+
+@frappe.whitelist()
+def get_linked_customer(suppname):
+ 	return frappe.db.sql("""select link_doctype,link_name,DATE_FORMAT(creation,'%%M-%%d-%%Y') as join_date from `tabDynamic Link` where link_doctype='Customer' and parenttype='Supplier'and docstatus = 0 and parent=%s order by join_date desc """ ,suppname, as_dict=1) or 0
