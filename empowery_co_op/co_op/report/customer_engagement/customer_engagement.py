@@ -39,19 +39,38 @@ def get_linked(filters):
 	conditions = ""
 
 	if filters.get("supplier"):
-		conditions += "and parent= %(supplier)s"
+		conditions += "and b.parent= %(supplier)s"
 
-	return frappe.db.sql("""select customer_name,customer_primary_contact,mobile_no,email_id, 1 as linked from `tabCustomer`
-where customer_group !='Supplier' and name in (select link_name from `tabDynamic Link` where link_doctype='Customer' and parenttype='Supplier' and  docstatus = 0 %s ) order by linked,customer_name,customer_primary_contact""" % conditions, filters, as_dict=1)
+	return frappe.db.sql("""select * from 
+(
+select a.customer_name, concat(IFNULL(d.first_name,''),' ',IFNULL(d.last_name,'')) as customer_primary_contact, d.email_id, d.mobile_no, 1 as linked, 
+ROW_NUMBER() over (PARTITION by a.customer_name ORDER by c.creation) as rn
+from `tabCustomer` a 
+inner join `tabDynamic Link` b on b.link_doctype='Customer' and b.parenttype='Supplier' and b.docstatus = 0 
+ %s and b.link_name=a.customer_name
+left outer join `tabDynamic Link` c on c.link_doctype='Customer' and c.parenttype='Contact' and c.link_name=a.customer_name
+left outer join tabContact d on d.name = c.parent and d.is_primary_contact =1
+where a.customer_group !='Supplier'
+) t where t.rn=1""" % conditions, filters, as_dict=1)
 	
 def get_nonlinked(filters):
 	conditions = ""
 
 	if filters.get("supplier"):
-		conditions += "and parent= %(supplier)s"
+		conditions += "where b.parent= %(supplier)s"
 
-	return frappe.db.sql("""select customer_name,customer_primary_contact,mobile_no,email_id, 0 as linked from `tabCustomer`
-where customer_group !='Supplier' and name not in (select link_name from `tabDynamic Link` where link_doctype='Customer' and parenttype='Supplier' and  docstatus = 0 %s ) order by linked,customer_name,customer_primary_contact""" % conditions, filters, as_dict=1)
+	return frappe.db.sql("""select * from 
+(
+select a.customer_name, 0 as linked, concat(IFNULL(d.first_name,''),' ',IFNULL(d.last_name,'')) customer_primary_contact, d.email_id, d.mobile_no,
+ROW_NUMBER() over (PARTITION by a.customer_name ORDER by c.creation) as rn
+from `tabCustomer` a 
+left outer join `tabDynamic Link` c on c.link_doctype='Customer' and c.parenttype='Contact' and c.link_name=a.customer_name
+left outer join tabContact d on d.name = c.parent and d.is_primary_contact =1
+where a.customer_group !='Supplier' 
+and not exists 
+(select 1 from `tabDynamic Link` b 
+%s and b.link_doctype='Customer' and b.parenttype='Supplier' and b.docstatus = 0 and b.link_name=a.customer_name)
+) t where t.rn=1""" % conditions, filters, as_dict=1)
 
 @frappe.whitelist()
 def add_party_link(custname, suppname,isLinked):
