@@ -39,7 +39,7 @@ def get_linked(filters):
 	conditions = ""
 
 	if filters.get("supplier"):
-		conditions += "and b.parent= %(supplier)s"
+		conditions += " and b.parent= %(supplier)s"
 
 	return frappe.db.sql("""select * from 
 (
