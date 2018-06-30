@@ -41,21 +41,23 @@ def get_linked(filters):
 	if filters.get("supplier"):
 		conditions += " and b.parent= %(supplier)s"
 
-	return frappe.db.sql("""select a.customer_name, concat(IFNULL(d.first_name,''),' ',IFNULL(d.last_name,'')) as customer_primary_contact, d.email_id, d.mobile_no, 1 as linked
-from `tabCustomer` a 
-inner join `tabDynamic Link` b on b.link_doctype='Customer' and b.parenttype='Supplier' and b.docstatus = 0 
-and b.link_name=a.customer_name %s
-left outer join `tabDynamic Link` l on l.link_doctype='Customer' and l.parenttype='Contact'
-left outer join 
+	return frappe.db.sql("""select a.customer_name, concat_ws(' ',c.first_name,c.last_name) customer_primary_contact, c.email_id, c.mobile_no, 1 as linked
+from
 (
-	select a.customer_name, max(l.name) link
+	select a.customer_name
+	from `tabCustomer` a
+	where  a.customer_group !='Supplier' and exists (select 1 from `tabDynamic Link` b where b.link_doctype='Customer' and b.parenttype='Supplier' 
+	and b.docstatus = 0 and b.link_name=a.customer_name %s)
+) a
+left outer join 
+(	select a.customer_name, max(d.name) contact
 	from `tabCustomer` a
 	inner join `tabDynamic Link` l on l.link_doctype='Customer' 
 	and l.parenttype='Contact' and l.link_name = a.customer_name
+	left outer join tabContact d on d.name = l.parent and d.is_primary_contact =1
 	group by a.customer_name
-) c on c.link = l.name and a.customer_name=c.customer_name
-left outer join tabContact d on d.name = l.parent and d.is_primary_contact =1
-where a.customer_group !='Supplier' and c.link is not null""" % conditions, filters, as_dict=1)
+) b on a.customer_name = b.customer_name
+left outer join tabContact c on c.name = b.contact""" % conditions, filters, as_dict=1)
 	
 def get_nonlinked(filters):
 	conditions = ""
