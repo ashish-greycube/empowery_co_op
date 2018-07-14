@@ -26,7 +26,7 @@ def execute(useremail,customer_company):
 	for d in linked_list:
 		row = []
 		linked=1
-		row = [d.parent,get_primary_address(d.parent),linked,"""
+		row = [d.name,get_primary_address(d.name),linked,"""
       <input type="button"  class="btn btn-primary  btn-xs" value="Remove" onclick="frappe.remove_party_link('%s', '%s')">"""% (customer,d.parent)]
 		data.append(row)
 
@@ -49,11 +49,11 @@ def get_columns():
 	return columns
 
 def get_linked(customer_company):
-	return frappe.db.sql("""select parent from `tabDynamic Link` where link_doctype='Customer' and parenttype='Supplier'and docstatus = 0 and link_name =%s
+	return frappe.db.sql("""select `tabSupplier`.name AS name from `tabSupplier` where disabled!=1 and name in(select parent from `tabDynamic Link` where link_doctype='Customer' and parenttype='Supplier'and docstatus = 0 and link_name =%s)
 	""",customer_company, as_dict=1)
 
 def get_nonlinked(customer_company):
-	return frappe.db.sql("""select `tabSupplier`.name AS name from `tabSupplier` where name not in (
+	return frappe.db.sql("""select `tabSupplier`.name AS name from `tabSupplier` where disabled!=1 and name not in (
 select parent from `tabDynamic Link` where link_doctype='Customer' and docstatus = 0 and link_name =%s
 	)""", customer_company, as_dict=1)
 

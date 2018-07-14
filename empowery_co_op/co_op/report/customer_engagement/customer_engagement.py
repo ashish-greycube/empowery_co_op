@@ -46,14 +46,14 @@ from
 (
 	select a.customer_name
 	from `tabCustomer` a
-	where  a.customer_group !='Supplier' and exists (select 1 from `tabDynamic Link` b where b.link_doctype='Customer' and b.parenttype='Supplier' 
+	where  a.customer_group !='Supplier' and a.disabled!=1 and exists (select 1 from `tabDynamic Link` b where b.link_doctype='Customer' and b.parenttype='Supplier' 
 	and b.docstatus = 0 and b.link_name=a.customer_name %s)
 ) a
 left outer join 
 (	select a.customer_name, max(d.name) contact
 	from `tabCustomer` a
 	inner join `tabDynamic Link` l on l.link_doctype='Customer' 
-	and l.parenttype='Contact' and l.link_name = a.customer_name
+	and l.parenttype='Contact' and l.link_name = a.customer_name 
 	left outer join tabContact d on d.name = l.parent and d.is_primary_contact =1
 	group by a.customer_name
 ) b on a.customer_name = b.customer_name
@@ -70,14 +70,14 @@ from
 (
 	select a.customer_name
 	from `tabCustomer` a
-	where  a.customer_group !='Supplier' and not exists (select 1 from `tabDynamic Link` b where b.link_doctype='Customer' and b.parenttype='Supplier' 
+	where  a.customer_group !='Supplier' and a.disabled!=1 and not exists (select 1 from `tabDynamic Link` b where b.link_doctype='Customer' and b.parenttype='Supplier' 
 	and b.docstatus = 0 and b.link_name=a.customer_name %s)
 ) a
 left outer join 
 (	select a.customer_name, max(d.name) contact
 	from `tabCustomer` a
 	inner join `tabDynamic Link` l on l.link_doctype='Customer' 
-	and l.parenttype='Contact' and l.link_name = a.customer_name
+	and l.parenttype='Contact' and l.link_name = a.customer_name and a.disabled!=1
 	left outer join tabContact d on d.name = l.parent and d.is_primary_contact =1
 	group by a.customer_name
 ) b on a.customer_name = b.customer_name

@@ -26,7 +26,7 @@ def get_data():
     			select parent,count(*) linked from `tabDynamic Link` 
     			where link_doctype='Customer' and parenttype='Supplier'and docstatus = 0 and parentfield='links' 
     			group by parent) cust_link on cust_link.parent = supp.name
-    			where supp.docstatus=0""", as_dict=1)
+    			where supp.docstatus=0 and supp.disabled!=1""", as_dict=1)
 		
 	return data
 @frappe.whitelist()
