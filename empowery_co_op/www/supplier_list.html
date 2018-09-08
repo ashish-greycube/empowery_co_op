@@ -1,0 +1,19 @@
+{% extends "templates/web.html" %}
+{% block title %}{{ _("Empowery Supplier Partners") }}{% endblock %}
+{% block style %} <style></style>
+{% endblock %}
+
+
+{% block page_content %}
+{% from "erpnext/templates/includes/macros.html" import product_image %}
+<div class="item-content" style="margin-top:20px;">
+    <div class="product-page-content" itemscope itemtype="http://schema.org/Product">
+        <div class="row">
+            <div class="col-sm-6">
+                {% if slideshow %}
+                {% include "templates/includes/slideshow.html" %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
