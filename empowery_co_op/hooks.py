@@ -147,5 +147,12 @@ fixtures = [
 			"Supplier-Client","Customer-Client","Supplier Engagement Report Settings-Client"]],
 		]
 	},
+        	{
+		"dt":"Custom Field",
+		"filters":[
+			["name", "in", [
+			'Supplier-column_break_36','Supplier-contact_email_for_offers','Supplier-disclaimer_details','Supplier-display_on_partner_listing_page','Supplier-geo_eligibility','Supplier-linked_customer_data','Supplier-links','Supplier-more_details','Supplier-offer_expiration_date','Supplier-offer_headline','Supplier-offer_summary','Supplier-section_break_14','Supplier-service_category','Supplier-vendor_offer_content','Supplier-vendor_offer_details']],
+		]
+	},
 
 ]

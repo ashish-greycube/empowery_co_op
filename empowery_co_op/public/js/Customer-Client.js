@@ -1,6 +1,6 @@
 frappe.ui.form.on('Customer', {
     onload: function (doc, dt, dn) {
-
+        if (doc.is_new() == 0) {
         frappe.call({
             method: "empowery_co_op.api.get_linked_supplier",
             args: {
@@ -17,11 +17,10 @@ frappe.ui.form.on('Customer', {
                 if (linked_supplier_data) {
                     const html = `
                         <table class="table table-bordered">
-                            <thead><tr><th>${__("Type")}</th><th>${__("Suppier Name")}</th><th>${__("Created Date")}</th></tr></thead>
+                            <thead><tr><th>${__("#")}</th><th>${__("Type")}</th><th>${__("Suppier Name")}</th><th>${__("Created Date")}</th></tr></thead>
                             <tbody>
-                                ${linked_supplier_data.map(
-                                    c => `<tr><td>${c.parenttype}</td><td>${c.parent}</td>
-                                    <td>${c.creation}</td></tr>`
+                                ${linked_supplier_data.map((c,i) => `<tr><td>${i+1}</td><td>${c.parenttype}</td><td>${c.parent}</td>
+                                    <td>${c.join_date}</td></tr>`
                                 ).join('')}
                             </tbody>
                         </table>`
@@ -29,5 +28,6 @@ frappe.ui.form.on('Customer', {
                 }
             }
         });
+    }
     }
 });

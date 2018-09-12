@@ -1,19 +1,262 @@
 {% extends "templates/web.html" %}
 {% block title %}{{ _("Empowery Supplier Partners") }}{% endblock %}
-{% block style %} <style></style>
-{% endblock %}
+{% block style %}{% include "empowery_co_op/www/supplier_list.css" %}{% endblock %}
 
+{% macro supplier_view_class(vendor_name) -%}
+supplierview {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace("|"," ")}}
+{%- endmacro %}
+
+{% macro supplier_category_options(vendor_category) -%}
+{{scrub(vendor_category|replace("&","and"))|replace("/","sub")}}
+{%- endmacro %}
 
 {% block page_content %}
-{% from "erpnext/templates/includes/macros.html" import product_image %}
-<div class="item-content" style="margin-top:20px;">
-    <div class="product-page-content" itemscope itemtype="http://schema.org/Product">
-        <div class="row">
-            <div class="col-sm-6">
-                {% if slideshow %}
-                {% include "templates/includes/slideshow.html" %}
-                {% endif %}
-            </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            {% include "templates/includes/slideshow.html" %}
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="title">{{_("Check off the programs you're interested in "|safe)}}
+                <br>{{_("then complete the form at the bottom of this page.")}} </h4>
+            {{_("Show programs for")}}
+            <select id="service_category_selector">
+                <option value="none"></option>
+                {% for vendor in vendor_category_list %}
+                {% autoescape false %}
+                <option value="{{supplier_category_options(vendor.service_category)}}">
+                    {% endautoescape %}
+                    {{ _(vendor.service_category) }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <ul>
+                <h4>{{_("Supplier Partners")}}</h4>
+                {% for vendor in vendor_supplier %}
+               
+                    {% autoescape false %}
+                    <div class="{{supplier_view_class(supplier_category[vendor.name])}}">
+                        {% endautoescape %}
+                        <li>
+                        <input type="checkbox" value="{{vendor.name}}" />
+
+                        <img itemprop="image" src="{{vendor.image}}" class="img-responsive img-thumbnail sidebar-image"
+                            style="max-height:25%; max-width:25%;">{{vendor.name}}
+                        <h5>{{vendor.offer_headline|replace("{exp_dt}",vendor.offer_expiration_date.strftime("%m/%d/%y"))}}</h5>
+                        {{vendor.offer_summary}}
+                        {% if (vendor.more_details)=="guest" -%}
+
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#suppliercollapse{{loop.index}}">
+                                            More detail</a>
+                                    </h4>
+                                </div>
+                                <div id="suppliercollapse{{loop.index}}" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        {{_("Sorry, you need to be a member.")}} <a href="{{url}}/membership">{{_("Click
+                                            here to join.")}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% else %}
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#suppliercollapse{{loop.index}}">
+                                            More detail</a>
+                                    </h4>
+                                </div>
+                                <div id="suppliercollapse{{loop.index}}" class="panel-collapse collapse">
+                                    <div class="panel-body">{{vendor.more_details|safe}}
+                                        {% autoescape false %}
+
+                                        <!-- Trigger/Open The Modal -->
+                                        <a href="#supplier_{{loop.index}}" data-toggle="modal" data-target="#supplier_{{loop.index}}">{{_("Disclaimer")}}</a>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="supplier_{{loop.index}}" role="dialog">
+                                            <div class="modal-dialog">
+
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">{{vendor.name}} {{_("Disclaimer")}}</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>{{vendor.disclaimer_details|safe}}</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                        {% endautoescape %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {%- endif %}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-sm-6">
+            <ul>
+                <h4>{{_("Affiliate Partners")}}</h4>
+                {% for vendor in vendor_affiliate %}
+               
+                    {% autoescape false %}
+                    <div class="{{supplier_view_class(supplier_category[vendor.name])}}">
+                        {% endautoescape %}
+                        <li>
+                        <input type="checkbox" value="{{vendor.name}}" />
+                        <img itemprop="image" src="{{vendor.image}}" class="img-responsive img-thumbnail sidebar-image"
+                            style="max-height:25%; max-width:25%;">{{vendor.name}}
+                        <h5>{{vendor.offer_headline|replace("{exp_dt}",vendor.offer_expiration_date.strftime("%m/%d/%y"))}}</h5>
+                        {{vendor.offer_summary}}
+                        {% if (vendor.more_details)=="guest" -%}
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#affiliatecollapse{{loop.index}}">
+                                            More detail</a>
+                                    </h4>
+                                </div>
+                                <div id="affiliatecollapse{{loop.index}}" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        {{_("Sorry, you need to be a member.")}} <a href="{{url}}/membership">{{_("Click
+                                            here to join.")}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#affiliatecollapse{{loop.index}}">
+                                            More detail</a>
+                                    </h4>
+                                </div>
+                                <div id="affiliatecollapse{{loop.index}}" class="panel-collapse collapse">
+                                    <div class="panel-body">{{vendor.more_details|safe}}
+                                        {% autoescape false %}
+                                        <a href="#affiliate_{{loop.index}}" data-toggle="modal" data-target="#affiliate_{{loop.index}}">{{_("Disclaimer")}}</a>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="affiliate_{{loop.index}}" role="dialog">
+                                            <div class="modal-dialog">
+
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">{{vendor.name}} {{_("Disclaimer")}}</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>{{vendor.disclaimer_details|safe}}</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        {% endautoescape %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {%- endif %}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="help">Your Name </div>
+            {% if frappe.session.user!="Guest" and (frappe.full_name!=undefined or frappe.full_name!="" or
+            frappe.full_name!="None") %}
+            <input name="sender_name" type="text" value={{frappe.full_name}} /> <br /><br />
+            {%else%}
+            <input name="sender_name" type="text" placeholder="Jane Doe" /> <br /><br />
+            {% endif %}
+
+
+            <div class="help">Phone Number</div>
+            {% if frappe.session.user!="Guest" and (form_data!=0 ) %}
+            <input name="phone" type="text" value="{{ form_data.phone }}" /> <br /><br />
+            {%else%}
+            <input name="phone" type="text" placeholder="12345676" /> <br /><br />
+            {% endif %}
+        </div>
+        <div class="col-sm-6">
+
+            <div class="help">Company Name</div>
+            {% if frappe.session.user!="Guest" and (form_data!=0 ) %}
+            <input name="company_name" type="text" value="{{ form_data.company }}" /> <br /><br />
+            {%else%}
+            <input name="company_name" type="text" placeholder="My Company" /> <br /><br />
+            {% endif %}
+
+            <div class="help">Email Address</div>
+            {% if frappe.session.user!="Guest" %}
+            <input name="email" type="text" value="{{frappe.session.user}}" /> <br /><br />
+            {%else%}
+            <input name="email" type="text" placeholder="jane_doe@example.com" /> <br /><br />
+            {% endif %}
+
+            <div id="form-alert" class="alert" style="display: none; margin-bottom: 10px;"></div>
+            <button class="btn btn-success btn-request">{{_("Request Information")}}</button><br />
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myOutput{{disclaimer_details}}" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">head</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ disclaimer_details }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 {% endblock %}
