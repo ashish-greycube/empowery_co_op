@@ -225,7 +225,7 @@
   "reqd": 0, 
   "search_index": 0, 
   "unique": 0, 
-  "width": null
+  "width": 100
  }, 
  {
   "allow_on_submit": 0, 
