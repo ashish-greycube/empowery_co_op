@@ -21,5 +21,32 @@ def get_data():
 					"hide_count": True
 				}
 			]
+		},
+		{
+			"label": _("Empowery vendor listing facility"),
+			"icon": "fa fa-print",
+			"items": [
+				{
+					"type": "doctype",
+					"name": "Service Category",
+					"label": _("Service Category"),
+					"description": _("Define Service Category"),
+					"hide_count": False
+				},
+				{
+					"type": "doctype",
+					"name": "Vendor Offer",
+					"label": _("Vendor Carousel & Offer email"),
+					"description": _("Define Vendor Carousel & Offer email"),
+					"hide_count": True
+				},				
+				{
+					"type": "doctype",
+					"name": "Supplier",
+					"label": _("Vendor Offer meta & content"),
+					"description": _("Define Vendor Offer meta & content"),
+					"hide_count": True
+				}
+			]
 		}
     ]

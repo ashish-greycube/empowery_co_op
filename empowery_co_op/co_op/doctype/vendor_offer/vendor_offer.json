@@ -8,7 +8,7 @@
  "custom": 0, 
  "docstatus": 0, 
  "doctype": "DocType", 
- "document_type": "Setup", 
+ "document_type": "", 
  "editable_grid": 1, 
  "engine": "InnoDB", 
  "fields": [
@@ -175,7 +175,7 @@
  "issingle": 1, 
  "istable": 0, 
  "max_attachments": 0, 
- "modified": "2018-09-12 03:48:19.971338", 
+ "modified": "2018-09-12 04:43:56.176161", 
  "modified_by": "Administrator", 
  "module": "CO-OP", 
  "name": "Vendor Offer", 
