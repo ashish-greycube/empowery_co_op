@@ -7,7 +7,7 @@ import email
 def get_context(context):
     context.no_cache = 1
     # setup vendor slideshow
-    vendor_slideshow_doc = frappe.get_single('Vendor Offer')
+    vendor_slideshow_doc = frappe.get_single('Vendor Carousel and Email template')
     if vendor_slideshow_doc.slideshow:
         slideshow = frappe.get_doc("Website Slideshow", vendor_slideshow_doc.slideshow)
         context.slideshow=vendor_slideshow_doc.slideshow
@@ -77,7 +77,7 @@ order by supplier.name,category.service_category""",as_dict=1)
 
 @frappe.whitelist(allow_guest=True)
 def send_email(name,company,email,phone,is_guest,vendor_list):
-    vendor_offer_doc = frappe.get_single('Vendor Offer')
+    vendor_offer_doc = frappe.get_single('Vendor Carousel and Email template')
     raw_subject=vendor_offer_doc.subject
     raw_email=vendor_offer_doc.email
     raw_vendor_list=json.loads(vendor_list)

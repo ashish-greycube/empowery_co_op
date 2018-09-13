@@ -23,27 +23,27 @@ def get_data():
 			]
 		},
 		{
-			"label": _("Empowery vendor listing facility"),
+			"label": _("Ven-Powery"),
 			"icon": "fa fa-print",
 			"items": [
 				{
 					"type": "doctype",
 					"name": "Service Category",
-					"label": _("Service Category"),
+					"label": _("Vendor Service Category"),
 					"description": _("Define Service Category"),
 					"hide_count": False
 				},
 				{
 					"type": "doctype",
-					"name": "Vendor Offer",
-					"label": _("Vendor Carousel & Offer email"),
+					"name": "Vendor Carousel and Email template",
+					"label": _("Vendor Carousel & Email template"),
 					"description": _("Define Vendor Carousel & Offer email"),
 					"hide_count": True
 				},				
 				{
 					"type": "doctype",
 					"name": "Supplier",
-					"label": _("Vendor Offer meta & content"),
+					"label": _("Vendor listing Settings & Content"),
 					"description": _("Define Vendor Offer meta & content"),
 					"hide_count": True
 				}

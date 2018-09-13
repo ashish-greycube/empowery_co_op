@@ -31,10 +31,10 @@ frappe.ui.form.on('Supplier', {
         }
     },
     refresh: function (frm) {
-        summary_length = 'Tag:< br>' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 'Cur length-' + frm.doc.offer_summary.length + ' Max-42'
+        summary_length = 'Allowed Tag: <br>' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 'Current char count-' + frm.doc.offer_summary.length + ' Max-42'
         frm.set_df_property('offer_summary', 'description', summary_length);
 
-        headline_length = 'Tags:{exp_dt},< br>' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 'Cur length-' + frm.doc.offer_headline.length + ' Max-50'
+        headline_length = 'Allowed Tags:{exp_dt},<br>' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 'Current char count-' + frm.doc.offer_headline.length + ' Max-50'
         frm.set_df_property('offer_headline', 'description', headline_length);
 
     }

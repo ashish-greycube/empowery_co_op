@@ -84,9 +84,9 @@ $(document).ready(function() {
  
                           }}});
  
-    var message = message + "Interested Vendor: "+sel
+    var message = message + "Inquiry for vendor: "+sel
       erpnext.send_message({
-        subject:'Query for vendor interest',
+        subject:'Inquiry for vendor :'+sel,
         sender: $('[name="email"]').val(),
         status: 'Open',
         message: message,
