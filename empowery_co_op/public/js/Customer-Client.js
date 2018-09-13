@@ -1,6 +1,6 @@
 frappe.ui.form.on('Customer', {
     onload: function (doc, dt, dn) {
-        if (doc.is_new() == 0) {
+        if (doc.is_new() != 0) {
         frappe.call({
             method: "empowery_co_op.api.get_linked_supplier",
             args: {
