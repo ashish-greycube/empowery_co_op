@@ -54,23 +54,23 @@ order by supplier.name,category.service_category""",as_dict=1)
 
     # setup vedor data
     if frappe.session.user=='Guest':
-        context.vendor_supplier = frappe.db.sql("""select name,supplier_type,image,service_category,offer_headline,offer_expiration_date,offer_summary,'guest' as more_details,geo_eligibility
+        context.vendor_supplier = frappe.db.sql("""select name,supplier_type,image,offer_headline,offer_expiration_date,offer_summary,'guest' as more_details,geo_eligibility
         from `tabSupplier`
         where display_on_partner_listing_page=1 and
         supplier_type ='Supplier Partner' order by name""",as_dict=1)
 
-        context.vendor_affiliate = frappe.db.sql("""select name,supplier_type,image,service_category,offer_headline,offer_expiration_date,offer_summary,'guest' as more_details,geo_eligibility
+        context.vendor_affiliate = frappe.db.sql("""select name,supplier_type,image,offer_headline,offer_expiration_date,offer_summary,'guest' as more_details,geo_eligibility
         from `tabSupplier`
         where display_on_partner_listing_page=1 and
         supplier_type ='Affiliate Partner' order by name""",as_dict=1)
 
     else:
-        context.vendor_supplier = frappe.db.sql("""select name,supplier_type,image,service_category,offer_headline,offer_expiration_date,offer_summary,more_details as more_details ,geo_eligibility,disclaimer_details,contact_email_for_offers
+        context.vendor_supplier = frappe.db.sql("""select name,supplier_type,image,offer_headline,offer_expiration_date,offer_summary,more_details as more_details ,geo_eligibility,disclaimer_details,contact_email_for_offers
         from `tabSupplier`
         where display_on_partner_listing_page=1 and
         supplier_type ='Supplier Partner' order by name""",as_dict=1)
 
-        context.vendor_affiliate = frappe.db.sql("""select name,supplier_type,image,service_category,offer_headline,offer_expiration_date,offer_summary,more_details as more_details,geo_eligibility,disclaimer_details,contact_email_for_offers
+        context.vendor_affiliate = frappe.db.sql("""select name,supplier_type,image,offer_headline,offer_expiration_date,offer_summary,more_details as more_details,geo_eligibility,disclaimer_details,contact_email_for_offers
         from `tabSupplier`
         where display_on_partner_listing_page=1 and
         supplier_type ='Affiliate Partner' order by name""",as_dict=1)

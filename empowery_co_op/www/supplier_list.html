@@ -49,7 +49,12 @@ supplierview {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
 
                         <img itemprop="image" src="{{vendor.image}}" class="img-responsive img-thumbnail sidebar-image"
                             style="max-height:25%; max-width:25%;">{{vendor.name}}
-                        <h5>{{vendor.offer_headline|replace("{exp_dt}",vendor.offer_expiration_date.strftime("%m/%d/%y"))}}</h5>
+                            {% if vendor.offer_expiration_date is not none %}   
+    <h5>{{vendor.offer_headline|replace("{exp_dt}",vendor.offer_expiration_date.strftime("%m/%d/%y"))}}</h5>
+{% else %}
+     <h5>{{vendor.offer_headline}}</h5>
+{%endif %}
+                         
                         {{vendor.offer_summary}}
                         {% if (vendor.more_details)=="guest" -%}
 
@@ -132,7 +137,12 @@ supplierview {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
                         <input type="checkbox" value="{{vendor.name}}" />
                         <img itemprop="image" src="{{vendor.image}}" class="img-responsive img-thumbnail sidebar-image"
                             style="max-height:25%; max-width:25%;">{{vendor.name}}
-                        <h5>{{vendor.offer_headline|replace("{exp_dt}",vendor.offer_expiration_date.strftime("%m/%d/%y"))}}</h5>
+                            {% if vendor.offer_expiration_date is not none %}   
+                            <h5>{{vendor.offer_headline|replace("{exp_dt}",vendor.offer_expiration_date.strftime("%m/%d/%y"))}}</h5>
+                        {% else %}
+                             <h5>{{vendor.offer_headline}}</h5>
+                        {%endif %}
+             
                         {{vendor.offer_summary}}
                         {% if (vendor.more_details)=="guest" -%}
                         <div class="panel-group" id="accordion">
