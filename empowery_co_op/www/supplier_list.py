@@ -103,18 +103,19 @@ def send_email(name,company,email,phone,is_guest,vendor_list):
     raw_email=vendor_offer_doc.email
 
     raw_vendor_list=json.loads(vendor_list)
-    
+    count=0
     for vendor in raw_vendor_list:
         subject=raw_subject.replace('{sender_name}', name).replace('{sender_company}',company).replace('{sender_email}',email).replace('{sender_phone}',phone).replace('{sender_is_guest}',is_guest).replace('{vendor_name}',vendor)
         email=raw_email.replace('{sender_name}', name).replace('{sender_company}',company).replace('{sender_email}',email).replace('{sender_phone}',phone).replace('{sender_is_guest}',is_guest).replace('{vendor_name}',vendor)
         vendor_email= frappe.db.sql("""select contact_email_for_offers from  `tabSupplier` where name=%s""",vendor,as_dict=1)
-        # outgoing_email_id = frappe.get_doc("Email Account", {"default_outgoing": "1"})
-        # if outgoing_email_id:
-        recipients = split_emails(frappe.db.get_value("Supplier", filters={"name": vendor}, fieldname="contact_email_for_offers"))
+        outgoing_email_id = frappe.get_doc("Email Account", {"default_outgoing": "1"})
+        if outgoing_email_id:
+            recipients = split_emails(frappe.db.get_value("Supplier", filters={"name": vendor}, fieldname="contact_email_for_offers"))
         
-        frappe.sendmail(recipients=recipients, message=email, subject=subject, now=True)
-        recipients=None
-        email=None
-        subject=None
-    return
+            frappe.sendmail(recipients=recipients, message=email, subject=subject)
+            recipients=None
+            email=None
+            subject=None
+            count=count+1
+    return count
 

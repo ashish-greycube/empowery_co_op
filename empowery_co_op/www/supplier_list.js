@@ -95,7 +95,7 @@ $(document).ready(function() {
             callback: function(r) {
                           if(r.message) {
                               data=r.message
- 
+                              console.log(r.message)
                           }}});
  
     var message = message + "Inquiry for vendor: "+sel
