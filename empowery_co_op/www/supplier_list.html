@@ -57,10 +57,11 @@ all_location {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
         </div>
     </div>
 
-    <div class="row list_box">
+    <div class="row">
         <div class="col-sm-6">
             <ul>
                 <h4>{{_("Supplier Partners")}}</h4>
+
                 {% for vendor in vendor_supplier %}
 
                 {% autoescape false %}
@@ -154,9 +155,12 @@ all_location {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
                 {% endfor %}
             </ul>
         </div>
+
+
         <div class="col-sm-6">
             <ul>
                 <h4>{{_("Affiliate Partners")}}</h4>
+
                 {% for vendor in vendor_affiliate %}
 
                     {% autoescape false %}
@@ -239,7 +243,9 @@ all_location {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
                 </li>
                  <!-- ending div of css show / hide -->
             </div>
-                {% endfor %}
+              
+            {% endfor %}
+           
             </ul>
         </div>
     </div>

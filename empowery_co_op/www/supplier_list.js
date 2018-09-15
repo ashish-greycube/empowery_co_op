@@ -12,12 +12,9 @@ $(document).ready(function() {
      $('#service_category_selector').change(function() {
 
         var location=$('#location_category_selector').val()
-        var category=$(this).val()
+        var category=$('#service_category_selector').val()
 
-        console.log(location)
-        console.log(category)
-
-        if (category=='all_category' && location=='all_location') {
+        if (location=='all_location' && category=='all_category'  ) {
             $('.all_location').show();
         }
 
@@ -26,24 +23,25 @@ $(document).ready(function() {
             $('.'+location).show();
         }
 
-        if( (location!='all_location' && category!='all_category') || (location=='all_location' && category!='all_category' )) {
+        if (location!='all_location' && category!='all_category')  {
             $('.all_location').hide();
-            $("#"+category).filter("."+location).show();
+            $("div#"+category).filter("."+location).show();
         }
 
+        if (location=='all_location' && category!='all_category' ) {
+            $('.all_location').hide();
+            $("div#"+category).show();
+        }
       
     });
 
           // filter vendor list as per dropdown selection
           $('#location_category_selector').change(function() {
         
+            var location=$('#location_category_selector').val()
             var category=$('#service_category_selector').val()
-            var location=$(this).val()
-
-            console.log(location)
-            console.log(category)
-
-            if (category=='all_category' && location=='all_location') {
+    
+            if (location=='all_location' && category=='all_category'  ) {
                 $('.all_location').show();
             }
     
@@ -51,9 +49,15 @@ $(document).ready(function() {
                 $('.all_location').hide();
                 $('.'+location).show();
             }
-            if( (location!='all_location' && category!='all_category') || (location=='all_location' && category!='all_category' )) {
+    
+            if (location!='all_location' && category!='all_category')  {
                 $('.all_location').hide();
-                $("#"+category).filter("."+location).show();
+                $("div#"+category).filter("."+location).show();
+            }
+    
+            if (location=='all_location' && category!='all_category' ) {
+                $('.all_location').hide();
+                $("div#"+category).show();
             }
           
         });

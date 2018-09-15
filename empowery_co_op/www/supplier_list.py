@@ -90,7 +90,9 @@ def send_email(name,company,email,phone,is_guest,vendor_list):
     vendor_offer_doc = frappe.get_single('Vendor Carousel and Email template')
     raw_subject=vendor_offer_doc.subject
     raw_email=vendor_offer_doc.email
+
     raw_vendor_list=json.loads(vendor_list)
+    
     for vendor in raw_vendor_list:
         subject=raw_subject.replace('{sender_name}', name).replace('{sender_company}',company).replace('{sender_email}',email).replace('{sender_phone}',phone).replace('{sender_is_guest}',is_guest).replace('{vendor_name}',vendor)
         email=raw_email.replace('{sender_name}', name).replace('{sender_company}',company).replace('{sender_email}',email).replace('{sender_phone}',phone).replace('{sender_is_guest}',is_guest).replace('{vendor_name}',vendor)
@@ -98,4 +100,10 @@ def send_email(name,company,email,phone,is_guest,vendor_list):
         # outgoing_email_id = frappe.get_doc("Email Account", {"default_outgoing": "1"})
         # if outgoing_email_id:
         recipients = split_emails(frappe.db.get_value("Supplier", filters={"name": vendor}, fieldname="contact_email_for_offers"))
+        
         frappe.sendmail(recipients=recipients, message=email, subject=subject, now=True)
+        recipients=None
+        email=None
+        subject=None
+    return
+
