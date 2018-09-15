@@ -28,11 +28,11 @@ all_location {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
     </div>
 
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12 text-center head_text">
             <h4 class="title">{{_("Check off the programs you're interested in "|safe)}}
                 <br>{{_("then complete the form at the bottom of this page.")}} </h4>
 
-            {{_("Show programs for")}}
+            <b>{{_("Show programs for")}}</b>
             <select id="service_category_selector">
                 <option value="all_category" selected="selected">{{_("All Categories")}}</option>
                 {% for vendor in vendor_category_list %}
