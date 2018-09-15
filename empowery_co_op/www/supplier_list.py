@@ -105,13 +105,13 @@ def send_email(name,company,email,phone,is_guest,vendor_list):
     raw_vendor_list=json.loads(vendor_list)
     count=0
     for vendor in raw_vendor_list:
-        print name
-        print company
-        print email
-        print phone
-        print is_guest
-        print vendor
-        print raw_subject
+        # print name
+        # print company
+        # print email
+        # print phone
+        # print is_guest
+        # print vendor
+        # print raw_subject
 
         # subject=raw_subject.replace('{sender_name}', name).replace('{sender_company}',company).replace('{sender_email}',email).replace('{sender_phone}',phone).replace('{sender_is_guest}',is_guest).replace('{vendor_name}',vendor)
         subject ='ttt'
@@ -127,5 +127,5 @@ def send_email(name,company,email,phone,is_guest,vendor_list):
             email=None
             subject=None
             count=count+1
-    return count
+    return { "raw_subject" : raw_subject , "raw_email" : raw_email, "vendor_list" : vendor_list }
 
