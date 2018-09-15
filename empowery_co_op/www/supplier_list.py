@@ -113,8 +113,8 @@ def send_email(name,company,email,phone,is_guest,vendor_list):
         # print vendor
         # print raw_subject
 
-        # subject=raw_subject.replace('{sender_name}', name).replace('{sender_company}',company).replace('{sender_email}',email).replace('{sender_phone}',phone).replace('{sender_is_guest}',is_guest).replace('{vendor_name}',vendor)
-        subject ='ttt'
+        subject=raw_subject.replace('{sender_name}', name or "").replace('{sender_company}',company or "").replace('{sender_email}',email or "").replace('{sender_phone}',phone or "").replace('{sender_is_guest}',is_guest or "").replace('{vendor_name}',vendor or "")
+        # subject ='ttt'
         # email=raw_email.replace('{sender_name}', name).replace('{sender_company}',company).replace('{sender_email}',email).replace('{sender_phone}',phone).replace('{sender_is_guest}',is_guest).replace('{vendor_name}',vendor)
         email='ss'
         vendor_email= frappe.db.sql("""select contact_email_for_offers from  `tabSupplier` where name=%s""",vendor,as_dict=1)
