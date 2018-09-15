@@ -95,7 +95,7 @@ $(document).ready(function() {
             callback: function(r) {
                           if(r.message) {
                               data=r.message
-                              console.log(r.message)
+                              msgprint('Email sent to '+data+ ' vendor');
                           }}});
  
     var message = message + "Inquiry for vendor: "+sel
