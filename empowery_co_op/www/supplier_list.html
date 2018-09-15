@@ -43,7 +43,7 @@ all_location {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
                 </option>
                 {% endfor %}
             </select>
-            {{_("in :")}}
+            <b>{{_("in :")}}</b>
             <select id="location_category_selector">
                 <option value="all_location" selected="selected"></option>
                 {% for vendor in vendor_location_list %}
@@ -57,7 +57,7 @@ all_location {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
         </div>
     </div>
 
-    <div class="row">
+    <div class="row list_box">
         <div class="col-sm-6">
             <ul>
                 <h4>{{_("Supplier Partners")}}</h4>
@@ -72,28 +72,33 @@ all_location {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
                 {%endif %}
                 {% endautoescape %}
 
-                <li>
-                        <input type="checkbox" value="{{vendor.name}}" />
-                        <img itemprop="image" src="{{vendor.image}}" class="img-responsive img-thumbnail sidebar-image"
-                            style="max-height:25%; max-width:25%;">{{vendor.service_category}}
+                <li class="sm-program">
+                	<label>
+                		<div class="col-xs-1">
+                        	<input type="checkbox" value="{{vendor.name}}" />
+                        </div>
+                        <div class="col-sm-4 hidden-xs">
+                        	<img itemprop="image" src="{{vendor.image}}" class="img-responsive img-thumbnail sidebar-image">
+                        </div>
+                        <div class="col-sm-7 col-xs-10">
+                       		<h4> {{vendor.service_category}} </h4>
                             
                             {% if vendor.offer_expiration_date is not none %}
-                                <div>{{vendor.offer_headline|replace("{exp_dt}",vendor.offer_expiration_date.strftime("%m/%d/%y"))}}</div>
+                                <div >{{vendor.offer_headline|replace("{exp_dt}",vendor.offer_expiration_date.strftime("%m/%d/%y"))}}</div>
                             {% else %}
-                                <div>{{vendor.offer_headline}}</div>
+                                <div >{{vendor.offer_headline}}</div>
                             {%endif %}
                             
-                            <div>{{vendor.offer_summary}}</div>
-                        
+                            <div >{{vendor.offer_summary}}</div>
+                            <a class="anchor" data-toggle="collapse" href="#suppliercollapse{{loop.index}}"> {{_("More detail")}} </a>
+                        </div>
                         {% if (vendor.more_details)=="guest" -%}
                         <div class="panel-group" id="accordion">
                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#suppliercollapse{{loop.index}}">
+                                <!-- <div class="panel-heading">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#suppliercollapse{{loop.index}}">
                                             {{_("More detail")}}</a>
-                                    </h4>
-                                </div>
+                                </div>-->
                                 <div id="suppliercollapse{{loop.index}}" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         {{_("Sorry, you need to be a member.")}} <a href="{{url}}/membership">{{_("Click
@@ -141,8 +146,9 @@ all_location {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
                             </div>
                         </div>
                         {%- endif %}
-                
+                	</label>
                 </li>
+                
                  <!-- ending div of css show / hide -->
             </div>
                 {% endfor %}
