@@ -4,7 +4,7 @@
 
 {% macro location_view_class(vendor_name) -%}
 {% if vendor_name ==" " %}
-{{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace("|"," ")}}
+
 {% else %}
 {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace("|"," ")}}
 {%endif %}
