@@ -3,6 +3,7 @@ import frappe, json
 from frappe.utils import split_emails
 from frappe import _
 import email
+from frappe.modules import get_module_path, scrub
 
 def get_context(context):
     context.no_cache = 1
@@ -30,7 +31,7 @@ order by supplier.name,location.geo_location""",as_dict=1)
     context.vendor_location_list=vendor_locations
 
 # setup vendor geo location list
-    vendor_location=frappe.db.sql("""select supplier.name,location.geo_location as location_category from `tabSupplier Geo Location Detail` location
+    vendor_location=frappe.db.sql("""select supplier.name,supplier.service_category,location.geo_location as location_category from `tabSupplier Geo Location Detail` location
 inner join `tabSupplier` supplier on location.parent=supplier.name
 where location.parentfield='geo_location' and supplier.display_on_partner_listing_page=1
 order by supplier.name,location.geo_location""",as_dict=1)
@@ -39,7 +40,10 @@ order by supplier.name,location.geo_location""",as_dict=1)
     for d in vendor_location:
         if not suppliers.get(d['name'],None):
             suppliers[d['name']] = []
-        suppliers[d['name']].append(d['location_category'])
+            suppliers[d['name']].append('all_category_all_location')
+            suppliers[d['name']].append(scrub(d['service_category']).replace('/','sub').replace('&','and')+'_'+'all_location')
+        suppliers[d['name']].append(scrub(d['service_category']).replace('/','sub').replace('&','and')+'_'+scrub(d['location_category']).replace('/','sub').replace('&','and'))
+        suppliers[d['name']].append('all_category'+'_'+scrub(d['location_category']).replace('/','sub').replace('&','and'))
     for key in suppliers:
         suppliers[key] = "|".join(set(suppliers[key]))
 
@@ -101,7 +105,7 @@ def send_email(name,company,email,phone,is_guest,vendor_list):
         # if outgoing_email_id:
         recipients = split_emails(frappe.db.get_value("Supplier", filters={"name": vendor}, fieldname="contact_email_for_offers"))
         
-        frappe.sendmail(recipients=recipients, message=email, subject=subject, now=True)
+        frappe.sendmail(recipients=recipients, message=email, subject=subject, delay=True)
         recipients=None
         email=None
         subject=None
