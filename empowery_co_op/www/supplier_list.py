@@ -118,7 +118,7 @@ def send_email(name,company,email,phone,is_guest,vendor_list):
         # if outgoing_email_id:
         recipients = split_emails(frappe.db.get_value("Supplier", filters={"name": vendor}, fieldname="contact_email_for_offers"))
         
-        frappe.sendmail(recipients=recipients, message=email, subject=subject, delay=True)
+        frappe.sendmail(recipients=recipients, message=email, subject=subject, now=True)
         recipients=None
         email=None
         subject=None

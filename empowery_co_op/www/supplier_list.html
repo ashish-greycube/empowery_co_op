@@ -250,44 +250,7 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="help">Your Name </div>
-            {% if frappe.session.user!="Guest" and (frappe.full_name!=undefined or frappe.full_name!="" or
-            frappe.full_name!="None") %}
-            <input name="sender_name" type="text" value={{frappe.full_name}} /> <br /><br />
-            {%else%}
-            <input name="sender_name" type="text" placeholder="Jane Doe" /> <br /><br />
-            {% endif %}
 
-
-            <div class="help">Phone Number</div>
-            {% if frappe.session.user!="Guest" and (form_data!=0 ) %}
-            <input name="phone" type="text" value="{{ form_data.phone }}" /> <br /><br />
-            {%else%}
-            <input name="phone" type="text" placeholder="12345676" /> <br /><br />
-            {% endif %}
-        </div>
-        <div class="col-sm-6">
-
-            <div class="help">Company Name</div>
-            {% if frappe.session.user!="Guest" and (form_data!=0 ) %}
-            <input name="company_name" type="text" value="{{ form_data.company }}" /> <br /><br />
-            {%else%}
-            <input name="company_name" type="text" placeholder="My Company" /> <br /><br />
-            {% endif %}
-
-            <div class="help">Email Address</div>
-            {% if frappe.session.user!="Guest" %}
-            <input name="email" type="text" value="{{frappe.session.user}}" /> <br /><br />
-            {%else%}
-            <input name="email" type="text" placeholder="jane_doe@example.com" /> <br /><br />
-            {% endif %}
-
-            <div id="form-alert" class="alert" style="display: none; margin-bottom: 10px;"></div>
-            <button class="btn btn-success btn-request">{{_("Request Information")}}</button><br />
-        </div>
-    </div>
 
 
     <!-- Modal -->
