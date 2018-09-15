@@ -6,6 +6,8 @@ import email
 
 def get_context(context):
     context.no_cache = 1
+    print 
+    print frappe.form_dict
     # setup vendor slideshow
     vendor_slideshow_doc = frappe.get_single('Vendor Carousel and Email template')
     if vendor_slideshow_doc.slideshow:
@@ -16,28 +18,36 @@ def get_context(context):
             "slideshow_header": slideshow.header or ""
         })
 
-    # setup vendor category list and disclaimer page
-    context.vendor_category_list=frappe.db.sql("""select distinct(category.service_category) as service_category from `tabService Category Detail` category
-            inner join `tabSupplier` supplier on category.parent=supplier.name
-            where category.parentfield='service_category' and supplier.display_on_partner_listing_page=1
-            order by category.service_category""",as_dict=1)
-    context.disclaimer_web_page = 'vendor_disclaimer.html'
+# setup selection dropdown vendor category list
+    vendor_categories=frappe.db.sql("""select distinct(service_category) from `tabSupplier` where service_category is not null""",as_dict=1)
+    context.vendor_category_list=vendor_categories
 
-# setup vendor category list
-    vendor_categories=frappe.db.sql("""select supplier.name,category.service_category as service_category from `tabService Category Detail` category
-inner join `tabSupplier` supplier on category.parent=supplier.name
-where category.parentfield='service_category' and supplier.display_on_partner_listing_page=1
-order by supplier.name,category.service_category""",as_dict=1)
+# setup selection dropdown vendor location list
+    vendor_locations=frappe.db.sql("""select distinct(location.geo_location) as location_category from `tabSupplier Geo Location Detail` location
+inner join `tabSupplier` supplier on location.parent=supplier.name
+where location.parentfield='geo_location' and supplier.display_on_partner_listing_page=1
+order by supplier.name,location.geo_location""",as_dict=1)
+    context.vendor_location_list=vendor_locations
+
+# setup vendor geo location list
+    vendor_location=frappe.db.sql("""select supplier.name,location.geo_location as location_category from `tabSupplier Geo Location Detail` location
+inner join `tabSupplier` supplier on location.parent=supplier.name
+where location.parentfield='geo_location' and supplier.display_on_partner_listing_page=1
+order by supplier.name,location.geo_location""",as_dict=1)
    
     suppliers = {}
-    for d in vendor_categories:
+    for d in vendor_location:
         if not suppliers.get(d['name'],None):
             suppliers[d['name']] = []
-        suppliers[d['name']].append(d['service_category'])
+        suppliers[d['name']].append(d['location_category'])
     for key in suppliers:
         suppliers[key] = "|".join(set(suppliers[key]))
 
-    context.supplier_category=suppliers
+    print suppliers
+    context.location_category=suppliers
+
+
+
 
     #setup form fill up data
     if frappe.session.user!='Guest':
@@ -54,23 +64,23 @@ order by supplier.name,category.service_category""",as_dict=1)
 
     # setup vedor data
     if frappe.session.user=='Guest':
-        context.vendor_supplier = frappe.db.sql("""select name,supplier_type,image,offer_headline,offer_expiration_date,offer_summary,'guest' as more_details,geo_eligibility
+        context.vendor_supplier = frappe.db.sql("""select name,supplier_type,image,service_category,offer_headline,offer_expiration_date,offer_summary,'guest' as more_details,geo_eligibility
         from `tabSupplier`
         where display_on_partner_listing_page=1 and
         supplier_type ='Supplier Partner' order by name""",as_dict=1)
 
-        context.vendor_affiliate = frappe.db.sql("""select name,supplier_type,image,offer_headline,offer_expiration_date,offer_summary,'guest' as more_details,geo_eligibility
+        context.vendor_affiliate = frappe.db.sql("""select name,supplier_type,image,service_category,offer_headline,offer_expiration_date,offer_summary,'guest' as more_details,geo_eligibility
         from `tabSupplier`
         where display_on_partner_listing_page=1 and
         supplier_type ='Affiliate Partner' order by name""",as_dict=1)
 
     else:
-        context.vendor_supplier = frappe.db.sql("""select name,supplier_type,image,offer_headline,offer_expiration_date,offer_summary,more_details as more_details ,geo_eligibility,disclaimer_details,contact_email_for_offers
+        context.vendor_supplier = frappe.db.sql("""select name,supplier_type,image,service_category,offer_headline,offer_expiration_date,offer_summary,more_details as more_details ,geo_eligibility,disclaimer_details,contact_email_for_offers
         from `tabSupplier`
         where display_on_partner_listing_page=1 and
         supplier_type ='Supplier Partner' order by name""",as_dict=1)
 
-        context.vendor_affiliate = frappe.db.sql("""select name,supplier_type,image,offer_headline,offer_expiration_date,offer_summary,more_details as more_details,geo_eligibility,disclaimer_details,contact_email_for_offers
+        context.vendor_affiliate = frappe.db.sql("""select name,supplier_type,image,service_category,offer_headline,offer_expiration_date,offer_summary,more_details as more_details,geo_eligibility,disclaimer_details,contact_email_for_offers
         from `tabSupplier`
         where display_on_partner_listing_page=1 and
         supplier_type ='Affiliate Partner' order by name""",as_dict=1)

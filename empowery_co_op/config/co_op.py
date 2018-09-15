@@ -35,6 +35,13 @@ def get_data():
 				},
 				{
 					"type": "doctype",
+					"name": "Supplier Geo Location",
+					"label": _("Vendor Geo Location"),
+					"description": _("Define Geo Location"),
+					"hide_count": False
+				},
+				{
+					"type": "doctype",
 					"name": "Vendor Carousel and Email template",
 					"label": _("Vendor Carousel & Email template"),
 					"description": _("Define Vendor Carousel & Offer email"),

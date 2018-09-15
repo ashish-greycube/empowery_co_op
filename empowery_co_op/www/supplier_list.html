@@ -2,11 +2,20 @@
 {% block title %}{{ _("Empowery Supplier Partners") }}{% endblock %}
 {% block style %}{% include "empowery_co_op/www/supplier_list.css" %}{% endblock %}
 
-{% macro supplier_view_class(vendor_name) -%}
-supplierview {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace("|"," ")}}
+{% macro location_view_class(vendor_name) -%}
+{% if vendor_name ==" " %}
+all_location
+{% else %}
+all_location {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace("|"," ")}}
+{%endif %}
+
 {%- endmacro %}
 
 {% macro supplier_category_options(vendor_category) -%}
+{{scrub(vendor_category|replace("&","and"))|replace("/","sub")}}
+{%- endmacro %}
+
+{% macro location_category_options(vendor_category) -%}
 {{scrub(vendor_category|replace("&","and"))|replace("/","sub")}}
 {%- endmacro %}
 
@@ -17,18 +26,31 @@ supplierview {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
             {% include "templates/includes/slideshow.html" %}
         </div>
     </div>
+
     <div class="row">
         <div class="col-sm-12">
             <h4 class="title">{{_("Check off the programs you're interested in "|safe)}}
                 <br>{{_("then complete the form at the bottom of this page.")}} </h4>
+
             {{_("Show programs for")}}
             <select id="service_category_selector">
-                <option value="none"></option>
+                <option value="all_category" selected="selected">{{_("All Categories")}}</option>
                 {% for vendor in vendor_category_list %}
                 {% autoescape false %}
                 <option value="{{supplier_category_options(vendor.service_category)}}">
                     {% endautoescape %}
                     {{ _(vendor.service_category) }}
+                </option>
+                {% endfor %}
+            </select>
+            {{_("in :")}}
+            <select id="location_category_selector">
+                <option value="all_location" selected="selected"></option>
+                {% for vendor in vendor_location_list %}
+                {% autoescape false %}
+                <option value="{{location_category_options(vendor.location_category)}}">
+                    {% endautoescape %}
+                    {{ _(vendor.location_category) }}
                 </option>
                 {% endfor %}
             </select>
@@ -42,28 +64,34 @@ supplierview {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
                 {% for vendor in vendor_supplier %}
 
                 {% autoescape false %}
-                <div class="{{supplier_view_class(supplier_category[vendor.name])}}">
-                    {% endautoescape %}
-                    <li>
+                {% if location_category[vendor.name] is defined %}
+                 <!-- starting div of css show / hide -->
+                    <div id="{{supplier_category_options(vendor.service_category)}}" class="{{location_view_class(location_category[vendor.name])}}">
+                    {% else %}
+                    <div id="{{supplier_category_options(vendor.service_category)}}" class="{{location_view_class('')}}">
+                {%endif %}
+                {% endautoescape %}
+
+                <li>
                         <input type="checkbox" value="{{vendor.name}}" />
-
                         <img itemprop="image" src="{{vendor.image}}" class="img-responsive img-thumbnail sidebar-image"
-                            style="max-height:25%; max-width:25%;">{{vendor.name}}
-                        {% if vendor.offer_expiration_date is not none %}
-                        <h5>{{vendor.offer_headline|replace("{exp_dt}",vendor.offer_expiration_date.strftime("%m/%d/%y"))}}</h5>
-                        {% else %}
-                        <h5>{{vendor.offer_headline}}</h5>
-                        {%endif %}
-
-                        {{vendor.offer_summary}}
+                            style="max-height:25%; max-width:25%;">{{vendor.service_category}}
+                            
+                            {% if vendor.offer_expiration_date is not none %}
+                                <div>{{vendor.offer_headline|replace("{exp_dt}",vendor.offer_expiration_date.strftime("%m/%d/%y"))}}</div>
+                            {% else %}
+                                <div>{{vendor.offer_headline}}</div>
+                            {%endif %}
+                            
+                            <div>{{vendor.offer_summary}}</div>
+                        
                         {% if (vendor.more_details)=="guest" -%}
-
                         <div class="panel-group" id="accordion">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" data-parent="#accordion" href="#suppliercollapse{{loop.index}}">
-                                            More detail</a>
+                                            {{_("More detail")}}</a>
                                     </h4>
                                 </div>
                                 <div id="suppliercollapse{{loop.index}}" class="panel-collapse collapse">
@@ -74,32 +102,29 @@ supplierview {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
                                 </div>
                             </div>
                         </div>
-
                         {% else %}
                         <div class="panel-group" id="accordion">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" data-parent="#accordion" href="#suppliercollapse{{loop.index}}">
-                                            More detail</a>
+                                            {{_("More detail")}}</a>
                                     </h4>
                                 </div>
                                 <div id="suppliercollapse{{loop.index}}" class="panel-collapse collapse">
-                                    <div class="panel-body">{{vendor.more_details|safe}}
+                                    <div class="panel-body">
+                                        <div>{{vendor.more_details|safe}}</div>
                                         {% autoescape false %}
-
                                         <!-- Trigger/Open The Modal -->
                                         <a href="#supplier_{{loop.index}}" data-toggle="modal" data-target="#supplier_{{loop.index}}">{{_("Disclaimer")}}</a>
-
                                         <!-- Modal -->
                                         <div class="modal fade" id="supplier_{{loop.index}}" role="dialog">
                                             <div class="modal-dialog">
-
                                                 <!-- Modal content-->
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        <h4 class="modal-title">{{vendor.name}} {{_("Disclaimer")}}</h4>
+                                                        <div class="modal-title">{{vendor.name}} {{_("Disclaimer")}}</div>
                                                     </div>
                                                     <div class="modal-body">
                                                         <p>{{vendor.disclaimer_details|safe}}</p>
@@ -108,20 +133,18 @@ supplierview {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
-
-
                                         {% endautoescape %}
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         {%- endif %}
-                </div>
+                
                 </li>
+                 <!-- ending div of css show / hide -->
+            </div>
                 {% endfor %}
             </ul>
         </div>
@@ -130,27 +153,35 @@ supplierview {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
                 <h4>{{_("Affiliate Partners")}}</h4>
                 {% for vendor in vendor_affiliate %}
 
-                {% autoescape false %}
-                <div class="{{supplier_view_class(supplier_category[vendor.name])}}">
+                    {% autoescape false %}
+                    {% if location_category[vendor.name] is defined %}
+                    <!-- starting div of css show / hide -->
+                    <div id="{{supplier_category_options(vendor.service_category)}}" class="{{location_view_class(location_category[vendor.name])}}">
+                    {% else %}
+                    <div id="{{supplier_category_options(vendor.service_category)}}" class="{{location_view_class('')}}">
+                    {%endif %}
                     {% endautoescape %}
+                 
                     <li>
                         <input type="checkbox" value="{{vendor.name}}" />
                         <img itemprop="image" src="{{vendor.image}}" class="img-responsive img-thumbnail sidebar-image"
-                            style="max-height:25%; max-width:25%;">{{vendor.name}}
-                        {% if vendor.offer_expiration_date is not none %}
-                        <h5>{{vendor.offer_headline|replace("{exp_dt}",vendor.offer_expiration_date.strftime("%m/%d/%y"))}}</h5>
-                        {% else %}
-                        <h5>{{vendor.offer_headline}}</h5>
-                        {%endif %}
+                            style="max-height:25%; max-width:25%;">{{vendor.service_category}}
+                        
+                            {% if vendor.offer_expiration_date is not none %}
+                                <div>{{vendor.offer_headline|replace("{exp_dt}",vendor.offer_expiration_date.strftime("%m/%d/%y"))}}</div>
+                            {% else %}
+                                <div>{{vendor.offer_headline}}</div>
+                            {%endif %}
+                            
+                            <div>{{vendor.offer_summary}}</div>
 
-                        {{vendor.offer_summary}}
                         {% if (vendor.more_details)=="guest" -%}
                         <div class="panel-group" id="accordion">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" data-parent="#accordion" href="#affiliatecollapse{{loop.index}}">
-                                            More detail</a>
+                                            {{_("More detail")}}</a>
                                     </h4>
                                 </div>
                                 <div id="affiliatecollapse{{loop.index}}" class="panel-collapse collapse">
@@ -167,18 +198,16 @@ supplierview {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" data-parent="#accordion" href="#affiliatecollapse{{loop.index}}">
-                                            More detail</a>
+                                            {{_("More detail")}}</a>
                                     </h4>
                                 </div>
                                 <div id="affiliatecollapse{{loop.index}}" class="panel-collapse collapse">
                                     <div class="panel-body">{{vendor.more_details|safe}}
                                         {% autoescape false %}
                                         <a href="#affiliate_{{loop.index}}" data-toggle="modal" data-target="#affiliate_{{loop.index}}">{{_("Disclaimer")}}</a>
-
                                         <!-- Modal -->
                                         <div class="modal fade" id="affiliate_{{loop.index}}" role="dialog">
                                             <div class="modal-dialog">
-
                                                 <!-- Modal content-->
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -192,7 +221,6 @@ supplierview {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
                                         {% endautoescape %}
@@ -201,8 +229,10 @@ supplierview {{scrub(vendor_name|replace("&","and")|replace("/","sub"))|replace(
                             </div>
                         </div>
                         {%- endif %}
-                </div>
+                
                 </li>
+                 <!-- ending div of css show / hide -->
+            </div>
                 {% endfor %}
             </ul>
         </div>

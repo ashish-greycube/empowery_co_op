@@ -8,14 +8,55 @@ $(document).ready(function() {
 
    
 
-      // filter vendor list as per dropdown selection
-    $('#service_category_selector').change(function() {
-        $('.supplierview').hide();
-        $('.' + $(this).val()).show();
-        if ($(this).val()=='none') {
-            $('.supplierview').show();
-        }      
+     // filter vendor list as per dropdown selection
+     $('#service_category_selector').change(function() {
+
+        var location=$('#location_category_selector').val()
+        var category=$(this).val()
+
+        console.log(location)
+        console.log(category)
+
+        if (category=='all_category' && location=='all_location') {
+            $('.all_location').show();
+        }
+
+        if (location!='all_location' && category=='all_category' ) {
+            $('.all_location').hide();
+            $('.'+location).show();
+        }
+
+        if( (location!='all_location' && category!='all_category') || (location=='all_location' && category!='all_category' )) {
+            $('.all_location').hide();
+            $("#"+category).filter("."+location).show();
+        }
+
+      
     });
+
+          // filter vendor list as per dropdown selection
+          $('#location_category_selector').change(function() {
+        
+            var category=$('#service_category_selector').val()
+            var location=$(this).val()
+
+            console.log(location)
+            console.log(category)
+
+            if (category=='all_category' && location=='all_location') {
+                $('.all_location').show();
+            }
+    
+            if (location!='all_location' && category=='all_category' ) {
+                $('.all_location').hide();
+                $('.'+location).show();
+            }
+            if( (location!='all_location' && category!='all_category') || (location=='all_location' && category!='all_category' )) {
+                $('.all_location').hide();
+                $("#"+category).filter("."+location).show();
+            }
+          
+        });
 
     // button for sign-up event
   

@@ -1,6 +1,4 @@
-ven_jignesh
-
--------------------------------------------
+-----------------------------------------
 Steps to do on live
 
 (1)create service category
@@ -20,30 +18,33 @@ Steps to do on live
 
 (2)create supplier types - 
 	Standard Partner
-	Affiliate Partner
+	Affiliate Partner (rename existing Affiliate)
 	Supplier Partner
 
+(3)create geo locations -
+	USA Only
+	Canda Only
+	USA and Canda
 
 (3) setup permission for display - Perm code is 1
 
-(4) Would trigger alert to Empowery Vendor Team to update information. near expiration date
+(4) setup email trigger alert to Empowery Vendor Team to update information. near expiration date
 
-(5)
-Setup Email
+(5) Setup Email template
 
 sub: Empowery Lead  from  {sender_name}
 
-Hi {vendor_name}
-
-This is to inform you that following lead is generated on empowery website. Details
-{sender_name}
-{sender_company}
-{sender_email}
-{sender_phone}
-Is inquiry coming from an empowery  member : {sender_is_guest}
-
-Thanks,
-Team Empowery
-
-Thanks,
-Team Empowery
+<div>Hi {vendor_name},</div>
+<div><br></div>
+<div>This is to inform you that following lead is generated on empowery website. </div>
+<div>Details as below :</div>
+<ol>
+<li>Sender Name : {sender_name}</li>
+<li>Sender Company: {sender_company}</li>
+<li>Sender Email : {sender_email}</li>
+<li>Sender Phone : {sender_phone}</li>
+<li>Is inquiry coming from an empowery  member : {sender_is_guest}</li>
+</ol>
+<div><br></div>
+<div>Thanks,</div>
+<div>Team Empowery</div>
