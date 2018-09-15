@@ -36,6 +36,9 @@ inner join `tabSupplier` supplier on location.parent=supplier.name
 where location.parentfield='geo_location' and supplier.display_on_partner_listing_page=1
 order by supplier.name,location.geo_location""",as_dict=1)
    
+    vendor_without_location=frappe.db.sql("""select supplier.name,supplier.service_category from `tabSupplier` supplier where supplier.name not in(
+select distinct(parent) from `tabSupplier Geo Location Detail` )""",as_dict=1)
+   
     suppliers = {}
     for d in vendor_location:
         if not suppliers.get(d['name'],None):
@@ -44,8 +47,18 @@ order by supplier.name,location.geo_location""",as_dict=1)
             suppliers[d['name']].append(scrub(d['service_category']).replace('/','sub').replace('&','and')+'_'+'all_location')
         suppliers[d['name']].append(scrub(d['service_category']).replace('/','sub').replace('&','and')+'_'+scrub(d['location_category']).replace('/','sub').replace('&','and'))
         suppliers[d['name']].append('all_category'+'_'+scrub(d['location_category']).replace('/','sub').replace('&','and'))
+
+    for d in vendor_without_location:
+        if not suppliers.get(d['name'],None):
+            suppliers[d['name']] = []
+            suppliers[d['name']].append('all_category_all_location')
+            suppliers[d['name']].append(scrub(d['service_category']).replace('/','sub').replace('&','and')+'_'+'all_location')  
+
+
     for key in suppliers:
         suppliers[key] = "|".join(set(suppliers[key]))
+
+
 
     print suppliers
     context.location_category=suppliers
