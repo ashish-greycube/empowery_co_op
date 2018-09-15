@@ -48,11 +48,11 @@ select distinct(parent) from `tabSupplier Geo Location Detail` )""",as_dict=1)
         suppliers[d['name']].append(scrub(d['service_category']).replace('/','sub').replace('&','and')+'_'+scrub(d['location_category']).replace('/','sub').replace('&','and'))
         suppliers[d['name']].append('all_category'+'_'+scrub(d['location_category']).replace('/','sub').replace('&','and'))
 
-    # for d in vendor_without_location:
-    #     if not suppliers.get(d['name'],None):
-    #         suppliers[d['name']] = []
-    #         suppliers[d['name']].append('all_category_all_location')
-    #         suppliers[d['name']].append(scrub(d['service_category']).replace('/','sub').replace('&','and')+'_'+'all_location')  
+    for d in vendor_without_location:
+        if not suppliers.get(d['name'],None):
+            suppliers[d['name']] = []
+            suppliers[d['name']].append('all_category_all_location')
+            suppliers[d['name']].append(scrub(d['service_category']).replace('/','sub').replace('&','and')+'_'+'all_location')  
 
 
     for key in suppliers:
