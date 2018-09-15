@@ -48,11 +48,11 @@ select distinct(parent) from `tabSupplier Geo Location Detail` )""",as_dict=1)
         suppliers[d['name']].append(scrub(d['service_category']).replace('/','sub').replace('&','and')+'_'+scrub(d['location_category']).replace('/','sub').replace('&','and'))
         suppliers[d['name']].append('all_category'+'_'+scrub(d['location_category']).replace('/','sub').replace('&','and'))
 
-    for d in vendor_without_location:
-        if not suppliers.get(d['name'],None):
-            suppliers[d['name']] = []
-            suppliers[d['name']].append('all_category_all_location')
-            suppliers[d['name']].append(scrub(d['service_category']).replace('/','sub').replace('&','and')+'_'+'all_location')  
+    # for d in vendor_without_location:
+    #     if not suppliers.get(d['name'],None):
+    #         suppliers[d['name']] = []
+    #         suppliers[d['name']].append('all_category_all_location')
+    #         suppliers[d['name']].append(scrub(d['service_category']).replace('/','sub').replace('&','and')+'_'+'all_location')  
 
 
     for key in suppliers:
@@ -102,25 +102,25 @@ select distinct(parent) from `tabSupplier Geo Location Detail` )""",as_dict=1)
         where display_on_partner_listing_page=1 and
         supplier_type ='Affiliate Partner' order by name""",as_dict=1)
 
-@frappe.whitelist(allow_guest=True)
-def send_email(name,company,email,phone,is_guest,vendor_list):
-    vendor_offer_doc = frappe.get_single('Vendor Carousel and Email template')
-    raw_subject=vendor_offer_doc.subject
-    raw_email=vendor_offer_doc.email
+# @frappe.whitelist(allow_guest=True)
+# def send_email(name,company,email,phone,is_guest,vendor_list):
+#     vendor_offer_doc = frappe.get_single('Vendor Carousel and Email template')
+#     raw_subject=vendor_offer_doc.subject
+#     raw_email=vendor_offer_doc.email
 
-    raw_vendor_list=json.loads(vendor_list)
+#     raw_vendor_list=json.loads(vendor_list)
     
-    for vendor in raw_vendor_list:
-        subject=raw_subject.replace('{sender_name}', name).replace('{sender_company}',company).replace('{sender_email}',email).replace('{sender_phone}',phone).replace('{sender_is_guest}',is_guest).replace('{vendor_name}',vendor)
-        email=raw_email.replace('{sender_name}', name).replace('{sender_company}',company).replace('{sender_email}',email).replace('{sender_phone}',phone).replace('{sender_is_guest}',is_guest).replace('{vendor_name}',vendor)
-        vendor_email= frappe.db.sql("""select contact_email_for_offers from  `tabSupplier` where name=%s""",vendor,as_dict=1)
-        # outgoing_email_id = frappe.get_doc("Email Account", {"default_outgoing": "1"})
-        # if outgoing_email_id:
-        recipients = split_emails(frappe.db.get_value("Supplier", filters={"name": vendor}, fieldname="contact_email_for_offers"))
+#     for vendor in raw_vendor_list:
+#         subject=raw_subject.replace('{sender_name}', name).replace('{sender_company}',company).replace('{sender_email}',email).replace('{sender_phone}',phone).replace('{sender_is_guest}',is_guest).replace('{vendor_name}',vendor)
+#         email=raw_email.replace('{sender_name}', name).replace('{sender_company}',company).replace('{sender_email}',email).replace('{sender_phone}',phone).replace('{sender_is_guest}',is_guest).replace('{vendor_name}',vendor)
+#         vendor_email= frappe.db.sql("""select contact_email_for_offers from  `tabSupplier` where name=%s""",vendor,as_dict=1)
+#         # outgoing_email_id = frappe.get_doc("Email Account", {"default_outgoing": "1"})
+#         # if outgoing_email_id:
+#         recipients = split_emails(frappe.db.get_value("Supplier", filters={"name": vendor}, fieldname="contact_email_for_offers"))
         
-        frappe.sendmail(recipients=recipients, message=email, subject=subject, now=True)
-        recipients=None
-        email=None
-        subject=None
-    return
+#         frappe.sendmail(recipients=recipients, message=email, subject=subject, now=True)
+#         recipients=None
+#         email=None
+#         subject=None
+#     return
 

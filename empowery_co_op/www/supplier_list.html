@@ -61,9 +61,9 @@
         <div class="col-sm-6">
             <ul>
                 <h4>{{_("Supplier Partners")}}</h4>
-{{vendor_supplier}}
+
                 {% for vendor in vendor_supplier %}
-{{vendor}}
+
                 {% autoescape false %}
                 {% if location_category[vendor.name] is defined %}
                  <!-- starting div of css show / hide -->
