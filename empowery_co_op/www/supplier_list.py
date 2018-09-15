@@ -101,7 +101,10 @@ def send_email(name,company,email,phone,is_guest,vendor_list):
     vendor_offer_doc = frappe.get_single('Vendor Carousel and Email template')
     raw_subject=vendor_offer_doc.subject or ''
     raw_email=vendor_offer_doc.email or ''
-
+    if is_guest==true:
+        is_guest='No, it is guest user'
+    else:
+        is_guest='Yes, it is member user'
     raw_vendor_list=json.loads(vendor_list)
     count=0
     for vendor in raw_vendor_list:
@@ -114,8 +117,8 @@ def send_email(name,company,email,phone,is_guest,vendor_list):
             recipients = split_emails(frappe.db.get_value("Supplier", filters={"name": vendor}, fieldname="contact_email_for_offers"))
             frappe.sendmail(recipients=recipients, message=email, subject=subject)
             recipients=None
-            email=None
             subject=None
+            email=None
             count=count+1
     return count
 
