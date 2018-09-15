@@ -105,7 +105,16 @@ def send_email(name,company,email,phone,is_guest,vendor_list):
     raw_vendor_list=json.loads(vendor_list)
     count=0
     for vendor in raw_vendor_list:
-        subject=raw_subject.replace('{sender_name}', name).replace('{sender_company}',company).replace('{sender_email}',email).replace('{sender_phone}',phone).replace('{sender_is_guest}',is_guest).replace('{vendor_name}',vendor)
+        print name
+        print company
+        print email
+        print phone
+        print is_guest
+        print vendor
+        print raw_subject
+
+        # subject=raw_subject.replace('{sender_name}', name).replace('{sender_company}',company).replace('{sender_email}',email).replace('{sender_phone}',phone).replace('{sender_is_guest}',is_guest).replace('{vendor_name}',vendor)
+        subject ='ttt'
         email=raw_email.replace('{sender_name}', name).replace('{sender_company}',company).replace('{sender_email}',email).replace('{sender_phone}',phone).replace('{sender_is_guest}',is_guest).replace('{vendor_name}',vendor)
         vendor_email= frappe.db.sql("""select contact_email_for_offers from  `tabSupplier` where name=%s""",vendor,as_dict=1)
         outgoing_email_id = frappe.get_doc("Email Account", {"default_outgoing": "1"})
