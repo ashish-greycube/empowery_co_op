@@ -25,7 +25,7 @@
             </select>
             <b>{{_("in :")}}</b>
             <select id="location_category_selector">
-                <option value="all_location" selected="selected">{{_("All Locations")}}</option>
+                <option value="all_location" selected="selected"></option>
                 {% for vendor in vendor_location_dropdown %}
                 <option value="{{vendor.location_category}}">
                     {{ _(vendor.location_category) }}
@@ -42,7 +42,7 @@
                 <div id="supplier_partners_list" >
                 {% for vendor in vendor_supplier %}
                 <div class="supplier" data-category="[all_category] [{{vendor.service_category}}]" data-location="{{location_category[vendor.name]}}">
-                <li class="sm-program">
+                     <li class="sm-program">
                 	<label>
                 		<div class="col-xs-1">
                         	<input type="checkbox" value="{{vendor.name}}" />
@@ -61,14 +61,13 @@
                             
                             <div >{{vendor.offer_summary}}</div>
                             <a class="anchor" data-toggle="collapse" href="#suppliercollapse{{loop.index}}"> {{_("More detail")}} </a>
+                            {% if '[USA Only]' in location_category[vendor.name] %}
+                            <span style="background-color:#F0F0F0; color: #82888C; font-weight:bold; font-size: 9px; margin-top: 3px; padding: 3px; display: inline-block;">USA ONLY</span>
+                            {% endif %}
                         </div>
                         {% if (vendor.more_details)=="guest" -%}
                         <div class="panel-group" id="accordion">
                             <div class="panel panel-default">
-                                <!-- <div class="panel-heading">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#suppliercollapse{{loop.index}}">
-                                            {{_("More detail")}}</a>
-                                </div>-->
                                 <div id="suppliercollapse{{loop.index}}" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         {{_("Sorry, you need to be a member.")}} <a href="{{url}}/membership">{{_("Click
@@ -84,6 +83,9 @@
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" data-parent="#accordion" href="#suppliercollapse{{loop.index}}">
                                             {{_("More detail")}}</a>
+                                            {% if '[USA Only]' in location_category[vendor.name] %}
+                                            <span style="background-color:#F0F0F0; color: #82888C; font-weight:bold; font-size: 9px; margin-top: 3px; padding: 3px; display: inline-block;">USA ONLY</span>
+                                            {% endif %}
                                     </h4>
                                 </div>
                                 <div id="suppliercollapse{{loop.index}}" class="panel-collapse collapse">
@@ -135,7 +137,6 @@
                 <div id="affiliate_partners_list">
                 {% for vendor in vendor_affiliate %}
                     <div class="supplier" data-category="[all_category] [{{vendor.service_category}}]" data-location="{{location_category[vendor.name]}}">
-              
                     <li>
                         <input type="checkbox" value="{{vendor.name}}" />
                         <img itemprop="image" src="{{vendor.image}}" class="img-responsive img-thumbnail sidebar-image"
@@ -155,9 +156,13 @@
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" data-parent="#accordion" href="#affiliatecollapse{{loop.index}}">
-                                            {{_("More detail")}}</a>
+                                            {{_("More detail")}}</a>                               
+                                            {% if '[USA Only]' in location_category[vendor.name] %}
+                                            <span style="background-color:#F0F0F0; color: #82888C; font-weight:bold; font-size: 9px; margin-top: 3px; padding: 3px; display: inline-block;">USA ONLY</span>
+                                            {% endif %}
                                     </h4>
                                 </div>
+
                                 <div id="affiliatecollapse{{loop.index}}" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         {{_("Sorry, you need to be a member.")}} <a href="{{url}}/membership">{{_("Click
@@ -173,6 +178,9 @@
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" data-parent="#accordion" href="#affiliatecollapse{{loop.index}}">
                                             {{_("More detail")}}</a>
+                                            {% if '[USA Only]' in location_category[vendor.name] %}
+                                            <span style="background-color:#F0F0F0; color: #82888C; font-weight:bold; font-size: 9px; margin-top: 3px; padding: 3px; display: inline-block;">USA ONLY</span>
+                                            {% endif %}
                                     </h4>
                                 </div>
                                 <div id="affiliatecollapse{{loop.index}}" class="panel-collapse collapse">

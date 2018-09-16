@@ -18,22 +18,25 @@ def get_context(context):
         })
 
 # setup selection dropdown for vendor category
-    vendor_categories=frappe.db.sql("""select distinct(service_category) from `tabSupplier` where service_category is not null""",as_dict=1)
+    vendor_categories=frappe.db.sql("""select distinct(service_category) from `tabSupplier`
+     where service_category is not null and supplier_type in ('Affiliate Partner','Supplier Partner')""",as_dict=1)
     context.vendor_category_dropdown=vendor_categories
 
 # setup selection dropdown for vendor location
     vendor_locations=frappe.db.sql("""select distinct(location.geo_location) as location_category from `tabSupplier Geo Location Detail` location
 inner join `tabSupplier` supplier on location.parent=supplier.name
 where location.parentfield='geo_location' and supplier.display_on_partner_listing_page=1
+and supplier_type in ('Affiliate Partner','Supplier Partner')
 order by supplier.name,location.geo_location""",as_dict=1)
     context.vendor_location_dropdown=vendor_locations
 
 # setup vendor geo location list
     vendor_location=frappe.db.sql("""select supplier.name,supplier.service_category,location.geo_location as location_category 
 from `tabSupplier` supplier 
-LEFT OUTER JOIN `tabSupplier Geo Location Detail` location
+INNER JOIN `tabSupplier Geo Location Detail` location
 on location.parent=supplier.name
 where supplier.display_on_partner_listing_page=1
+and supplier_type in ('Affiliate Partner','Supplier Partner')
 order by supplier.name,location.geo_location""",as_dict=1)
    
  

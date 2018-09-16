@@ -25,6 +25,7 @@ Steps to do on live
 	USA Only
 	Canda Only
 	USA and Canda
+	World wide
 
 (3) setup permission for display - Perm code is 1
 

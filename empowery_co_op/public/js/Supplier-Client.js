@@ -37,5 +37,17 @@ frappe.ui.form.on('Supplier', {
         headline_length = 'Allowed Tags:{exp_dt},<br>' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 'Current char count-' + frm.doc.offer_headline.length + ' Max-50'
         frm.set_df_property('offer_headline', 'description', headline_length);
 
+    },
+    validate: function (frm) {
+
+        if (frm.doc.display_on_partner_listing_page == 1) {
+            if (!(frm.doc.service_category) || (frm.doc.geo_location.length == 0)) {
+                var msg = "For vendor listing, 'service category' and 'geo location' are mandatory";
+                msgprint(msg);
+                throw msg;
+            }
+
+        }
+
     }
 });
