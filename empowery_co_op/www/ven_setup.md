@@ -43,7 +43,7 @@ sub: Empowery Lead  from  {sender_name}
 <li>Sender Company: {sender_company}</li>
 <li>Sender Email : {sender_email}</li>
 <li>Sender Phone : {sender_phone}</li>
-<li>Is inquiry coming from an empowery  member : {sender_is_guest}</li>
+<li>Is inquiry coming from an Empowery  member : {sender_is_guest}</li>
 </ol>
 <div><br></div>
 <div>Thanks,</div>

@@ -69,7 +69,7 @@ $(document).ready(function() {
 
 
     frappe.call({
-            method:'empowery_co_op.www.supplier_list.send_email',
+            method:'empowery_co_op.www.vendor_offer_list.send_email',
             args:{
                 name:args.sender_name,
                 company:args.company_name,
@@ -96,6 +96,7 @@ $(document).ready(function() {
   
               // clear all inputs
           $(':input').val('');
+          $('input:checkbox').removeAttr('checked');
         }
       });
     });
