@@ -7,6 +7,7 @@ $(document).ready(function() {
     }
 
     $('select').change(function(){
+        $('input:checkbox').removeAttr('checked');
         var location='['+$('#location_category_selector').val()+']'
         var category='['+$('#service_category_selector').val()+']'
       //hide all first
