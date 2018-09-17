@@ -1,5 +1,4 @@
-<style>
-                h4.title{
+<style>                h4.title{
 					    text-align:center;
 						font-size: 20px;
 						color: #7C888D;
@@ -18,12 +17,25 @@
 					font-weight: 700;
 					padding: 0 6px;
 				}
+				.head_text select{
+					    padding: 5px;
+				}
 				.list_box ul{
 					list-style:none;
 					    padding-left: 0;
 				}
+				.list_box ul li{
+					list-style:none;
+					border-top: 5px solid #F7F7F9;
+				}
+				.list_box ul label {
+					width:100%;
+					padding-bottom: 10px;
+    margin-bottom: 0;
+					
+				}
 				.sm-program  input[type=checkbox]{
-					 margin-top: 33px;
+					 margin-top: 47px;
 				}
 				.sm-program h4{
 					margin-top: 0;
@@ -54,4 +66,144 @@
 				.sm-program > label .col-xs-1{
 					text-align:center;
 				}
+				.sm-program > label:hover, li.sm-program:hover{
+					background-color:#F7F7F9;
+				}
+				.sm-program > label:hover .panel-group .panel{
+					background-color:#F7F7F9;
+				} 
+				.sm-program .panel-group .panel{
+					border-radius:0;
+					border:none;
+					box-shadow:none;
+					padding-left:10px;
+				}
+.sm-program .headimg{
+	width:100%;
+	min-height:110px;
+	max-height:110px;
+	white-space: nowrap;
+	background-color: #fff;
+    border: 1px solid #ddd;
+	    border-radius: 4px;
+		padding: 4px;
+		text-align: center;
+}
+.sm-program .headimg span{ display:none;
+}
+.sm-program .headimg img{
+	display: table-cell;
+	vertical-align:middle;
+	max-height: 104px;
+}
+.reqBtn{
+	width:100%;
+	margin-top:15px;
+}
+.formdiv{
+	    border: 5px solid #F7F7F9;
+    
+}
+.form-lead {
+    background: #F7F7F9;
+    color: #667175;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 8px 25px 10px 20px;
+    margin-bottom: 10px;
+	margin-top:0;
+}
+
+
+
+#the-carousel{
+	    background-color: #52ACC4;
+}
+.carousel-control .fa{
+	top: 43%;
+    position: relative;
+}
+.carousel-caption h4 {
+		font-size: 22px;
+		/*text-transform: uppercase;*/
+		font-weight: 500;
+		color: #fff;
+		opacity: 1;
+		margin-top: 8px;
+}
+.carousel-caption p {
+    color: #FFF;
+    font-size: 16px;
+    font-weight: 700;
+}
+@media only screen and (min-width: 768px){
+	.carousel-caption {
+		padding: 70px;
+		text-align: center;
+	}
+	.carousel-caption h4 {
+		font-size: 30px;
+	}
+	.carousel-caption p {
+		font-size: 18px;
+		margin-bottom: 30px;
+	}
+	
+}
+@media only screen and (min-width: 992px){
+	.carousel-caption {
+		padding: 20px 20px 10px;
+		right: 5%;
+		left: 53%;
+		text-align: left;
+		background-color: transparent;
+	}
+	.carousel-caption h4 {
+		font-size: 20px;
+		color: #f2f2f2;
+		font-weight: 600;
+		margin-top: 20px;
+	}
+	.carousel-caption p {
+		font-size: 16px;
+	}
+	.item img {
+		width: 50%;
+		height: auto;
+	}
+}
+@media only screen and (min-width: 1200px){
+	.carousel-caption {
+		padding-bottom: 10px;
+	}
+	.carousel-caption h4 {
+		font-size: 24px;
+		margin-top: 40px;
+	}
+	.carousel-caption p {
+		font-size: 18px;
+		margin-bottom: 20px;
+	}
+}
+
+
+@media only screen and (max-width: 767px){
+	.head_text select {
+		width: 75%;
+		margin: 6px auto;
+		display: block;
+	}
+	.carousel-caption {
+		right: 0;
+		left: 0;
+		background-color: rgba(0,0,0,.5);
+		padding: 20px;
+		top: 0;
+		bottom: 0;
+	}
+	.carousel-caption {
+    text-align: left;
+    text-shadow: 0 1px 2px rgba(0,0,0,.1);
+}
+}
 </style>
