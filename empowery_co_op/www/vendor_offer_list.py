@@ -95,9 +95,9 @@ def send_email(name,company,email,phone,is_guest,vendor_list):
     raw_subject=vendor_offer_doc.subject or ''
     raw_email=vendor_offer_doc.email or ''
     if is_guest==True:
-        is_guest='No, user is guest'
+        is_guest='No, user is a guest'
     else:
-        is_guest='Yes, user is member'
+        is_guest='Yes, user is an existing member'
     raw_vendor_list=json.loads(vendor_list)
     count=0
     for vendor in raw_vendor_list:
