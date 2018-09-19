@@ -136,6 +136,40 @@
     font-size: 16px;
     font-weight: 700;
 }
+.usatxt{
+	background-color:#F0F0F0; 
+	color: #82888C; 
+	font-weight:bold; 
+	font-size: 9px; 
+	margin-top: 3px; 
+	padding: 3px; 
+	display: inline-block;
+	border-radius:5px;
+	    line-height: 12px;
+}
+#form-alert.success{
+	padding: 7px 10px;
+    margin-bottom: 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: rgba(152, 216, 91, 0.4);
+    color: #000;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+#form-alert.alert{
+	padding: 7px 10px;
+    margin-bottom: 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    margin-top: 10px;
+    margin-bottom: 0;
+	    background: #e44d4d;
+    color: #fff;
+}
+.form-control.red{
+	border-color:#f31414;
+}
 @media only screen and (min-width: 768px){
 	.carousel-caption {
 		padding: 70px;

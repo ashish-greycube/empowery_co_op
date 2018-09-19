@@ -65,7 +65,7 @@
                             <div >{{vendor.offer_summary}}</div>
                             <a class="anchor" data-toggle="collapse" href="#suppliercollapse{{loop.index}}"> {{_("More detail")}} </a>
                             {% if '[USA Only]' in location_category[vendor.name] %}
-                            <span style="background-color:#F0F0F0; color: #82888C; font-weight:bold; font-size: 9px; margin-top: 3px; padding: 3px; display: inline-block;">USA ONLY</span>
+                            <span class="usatxt">USA ONLY</span>
                             {% endif %}
                         </div>
                         <div style="clear:both;"></div>
@@ -164,6 +164,9 @@
                             <div>{{vendor.offer_summary}}</div>
                             
                              <a class="anchor" data-toggle="collapse" href="#affiliatecollapse{{loop.index}}"> {{_("More detail")}} </a>
+                             {% if '[USA Only]' in location_category[vendor.name] %}
+                            <span class="usatxt">USA ONLY</span>
+                            {% endif %}
                           </div>  
 						<div style="clear:both;"></div>
                         {% if (vendor.more_details)=="guest" -%}
@@ -263,10 +266,10 @@
             {%else%}
             <input name="email" type="text" class="form-control"  placeholder="jane_doe@example.com" /> 
             {% endif %}
-
-            <div id="form-alert" class="alert" style="display: none; margin-bottom: 10px;"></div>
+			 <div id="form-alert" class="alert" style="display: none;"></div>
             <button class="btn btn-success btn-request reqBtn">{{_("Request Information")}}</button><br />
         </div>
+       
     </div>
 
 

@@ -26,6 +26,11 @@ $(document).ready(function () {
         // hide any message
         $("#form-alert").toggle(false);
 
+		$('[name="sender_name"]').removeClass('red');
+			$('[name="company_name"]').removeClass('red');
+			$('[name="email"]').removeClass('red');
+			$('[name="phone"]').removeClass('red');
+			
         //selected vendor
         var sel = $('input[type=checkbox]:checked').map(function (_, el) {
             return $(el).val();
@@ -47,12 +52,21 @@ $(document).ready(function () {
         if (!(args.sender_name && args.company_name && args.email &&
                 args.phone)) {
             msgprint("All fields are necessary. Please try again.");
+			$('[name="sender_name"]').addClass('red');
+			$('[name="company_name"]').addClass('red');
+			$('[name="email"]').addClass('red');
+			$('[name="phone"]').addClass('red');
+			$("#form-alert").attr('class', '');
+			$("#form-alert").addClass('alert');
             return;
         }
 
         // email is valid
         if (!valid_email(args.email)) {
             msgprint('Please enter a valid email id');
+			$('[name="email"]').addClass('red');
+			$("#form-alert").attr('class', '');
+			$("#form-alert").addClass('alert');
             return;
         }
 
@@ -81,6 +95,9 @@ $(document).ready(function () {
                 $("#form-alert").toggle(false);
                 if(r.message=='okay')
                 msgprint('Your inquiry is submited successfully. Thanks!');
+				$("#form-alert").attr('class', '');
+				$("#form-alert").addClass('success');
+				
                 $(':input').val('');
                 $('input:checkbox').removeAttr('checked');
                 $('.supplier').show()
