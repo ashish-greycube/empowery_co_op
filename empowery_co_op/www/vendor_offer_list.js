@@ -96,7 +96,8 @@ $(document).ready(function () {
                 if(r.message=='okay')
                 msgprint('Your inquiry is submited successfully. Thanks!');
 				$("#form-alert").attr('class', '');
-				$("#form-alert").addClass('success');
+                $("#form-alert").addClass('success');
+                $("#form-alert").focus();
 				
                 $(':input').val('');
                 $('input:checkbox').removeAttr('checked');

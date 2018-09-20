@@ -50,7 +50,7 @@
                         <div class="col-sm-4 hidden-xs">
                         	<div class="headimg">
                                 <span></span>
-                        		<img itemprop="image" src="{{vendor.image}}" class="img-responsive	 sidebar-image">
+                        		<img itemprop="image" src="{{vendor.image}}" class="img-responsive sidebar-image">
                             </div>
                         </div>
                         <div class="col-sm-7 col-xs-10">
@@ -63,7 +63,7 @@
                             {%endif %}
                             
                             <div >{{vendor.offer_summary}}</div>
-                            <a class="anchor" data-toggle="collapse" href="#suppliercollapse{{loop.index}}"> {{_("More detail")}} </a>
+                            <a class="anchor" data-parent="#accordion" data-toggle="collapse" href="#suppliercollapse{{loop.index}}"> {{_("More detail")}}↓</a>
                             {% if '[USA Only]' in location_category[vendor.name] %}
                             <span class="usatxt">USA ONLY</span>
                             {% endif %}
@@ -83,15 +83,6 @@
                         {% else %}
                         <div class="panel-group" id="accordion">
                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#suppliercollapse{{loop.index}}">
-                                            {{_("More detail")}}</a>
-                                            {% if '[USA Only]' in location_category[vendor.name] %}
-                                            <span style="background-color:#F0F0F0; color: #82888C; font-weight:bold; font-size: 9px; margin-top: 3px; padding: 3px; display: inline-block;">USA ONLY</span>
-                                            {% endif %}
-                                    </h4>
-                                </div>
                                 <div id="suppliercollapse{{loop.index}}" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         <div>{{vendor.more_details|safe}}</div>
@@ -163,7 +154,7 @@
                             
                             <div>{{vendor.offer_summary}}</div>
                             
-                             <a class="anchor" data-toggle="collapse" href="#affiliatecollapse{{loop.index}}"> {{_("More detail")}} </a>
+                             <a class="anchor" data-parent="#accordion" data-toggle="collapse" href="#affiliatecollapse{{loop.index}}"> {{_("More detail")}}↓</a>
                              {% if '[USA Only]' in location_category[vendor.name] %}
                             <span class="usatxt">USA ONLY</span>
                             {% endif %}
@@ -183,15 +174,6 @@
                         {% else %}
                         <div class="panel-group" id="accordion">
                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#affiliatecollapse{{loop.index}}">
-                                            {{_("More detail")}}</a>
-                                            {% if '[USA Only]' in location_category[vendor.name] %}
-                                            <span style="background-color:#F0F0F0; color: #82888C; font-weight:bold; font-size: 9px; margin-top: 3px; padding: 3px; display: inline-block;">USA ONLY</span>
-                                            {% endif %}
-                                    </h4>
-                                </div>
                                 <div id="affiliatecollapse{{loop.index}}" class="panel-collapse collapse">
                                     <div class="panel-body">{{vendor.more_details|safe}}
                                         {% autoescape false %}
