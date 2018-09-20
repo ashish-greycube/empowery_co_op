@@ -63,7 +63,7 @@
                             {%endif %}
                             
                             <div >{{vendor.offer_summary}}</div>
-                            <a class="anchor" data-parent="#accordion" data-toggle="collapse" href="#suppliercollapse{{loop.index}}"> {{_("More detail")}}↓</a>
+                            <a class="anchor" data-parent="#accordion" data-toggle="collapse" href="#suppliercollapse{{loop.index}}"> {{_("More detail")}} ↓</a>
                             {% if '[USA Only]' in location_category[vendor.name] %}
                             <span class="usatxt">USA ONLY</span>
                             {% endif %}
@@ -154,7 +154,7 @@
                             
                             <div>{{vendor.offer_summary}}</div>
                             
-                             <a class="anchor" data-parent="#accordion" data-toggle="collapse" href="#affiliatecollapse{{loop.index}}"> {{_("More detail")}}↓</a>
+                             <a class="anchor" data-parent="#accordion" data-toggle="collapse" href="#affiliatecollapse{{loop.index}}"> {{_("More detail")}} ↓</a>
                              {% if '[USA Only]' in location_category[vendor.name] %}
                             <span class="usatxt">USA ONLY</span>
                             {% endif %}
