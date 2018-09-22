@@ -12,8 +12,6 @@ frappe.ui.form.on('Supplier', {
                         $(cur_frm.fields_dict.linked_customer_data.wrapper).html(html);
                     }
                     const linked_customer_data = r.message;
-                    console.log(r.message)
-                    console.log(linked_customer_data)
                     if (linked_customer_data) {
                         const html = `
                         <table class="table table-bordered">
@@ -30,24 +28,38 @@ frappe.ui.form.on('Supplier', {
             });
         }
     },
-    refresh: function (frm) {
-        summary_length = 'Allowed Tag: <br>' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 'Current char count-' + frm.doc.offer_summary.length + ' Max-42'
-        frm.set_df_property('offer_summary', 'description', summary_length);
+    onload_post_render: function (frm) {
+        if(!frm.doc.offer_headline){
+            headline_length = 'Allowed Tags:{exp_dt},&lt;br&gt;' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 'Current char count-0'+ ' Max-50'
+            frm.set_df_property('offer_headline', 'description', headline_length);
+        }else{
+            headline_length = 'Allowed Tags:{exp_dt},&lt;br&gt;' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 'Current char count-' + frm.doc.offer_headline.length + ' Max-50'
+            frm.set_df_property('offer_headline', 'description', headline_length);
+        }
+        if(!frm.doc.offer_summary){
+            summary_length = 'Allowed Tag: &lt;br&gt;' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 'Current char count-0' + ' Max-42'
+            frm.set_df_property('offer_summary', 'description', summary_length);
+        }else{
+            summary_length = 'Allowed Tag: &lt;br&gt;' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 'Current char count-' + frm.doc.offer_summary.length + ' Max-42'
+            frm.set_df_property('offer_summary', 'description', summary_length);
+        }
+    },
 
-        headline_length = 'Allowed Tags:{exp_dt},<br>' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 'Current char count-' + frm.doc.offer_headline.length + ' Max-50'
+    offer_headline: function (frm) {
+        headline_length = 'Allowed Tags:{exp_dt},&lt;br&gt;' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 'Current char count-' + frm.doc.offer_headline.length + ' Max-50'
         frm.set_df_property('offer_headline', 'description', headline_length);
-
+    },
+    offer_summary: function (frm) {
+        summary_length = 'Allowed Tag: &lt;br&gt;' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 'Current char count-' + frm.doc.offer_summary.length + ' Max-42'
+        frm.set_df_property('offer_summary', 'description', summary_length);
     },
     validate: function (frm) {
-
         if (frm.doc.display_on_partner_listing_page == 1) {
             if (!(frm.doc.service_category) || (frm.doc.geo_location.length == 0)) {
                 var msg = "For vendor listing, 'service category' and 'geo location' are mandatory";
                 msgprint(msg);
                 throw msg;
             }
-
         }
-
     }
 });
