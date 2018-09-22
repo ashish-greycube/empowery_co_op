@@ -38,6 +38,7 @@ $(document).ready(function () {
 
         if (sel.length == 0) {
             msgprint('Please select atleast one supplier for inquiry');
+            $("#requestButton").focus();
             return;
         }
 
@@ -57,7 +58,8 @@ $(document).ready(function () {
 			$('[name="email"]').addClass('red');
 			$('[name="phone"]').addClass('red');
 			$("#form-alert").attr('class', '');
-			$("#form-alert").addClass('alert');
+            $("#form-alert").addClass('alert');
+            $("#requestButton").focus();
             return;
         }
 
@@ -66,7 +68,8 @@ $(document).ready(function () {
             msgprint('Please enter a valid email id');
 			$('[name="email"]').addClass('red');
 			$("#form-alert").attr('class', '');
-			$("#form-alert").addClass('alert');
+            $("#form-alert").addClass('alert');
+            $("input[name='email']").focus();
             return;
         }
 
@@ -97,11 +100,13 @@ $(document).ready(function () {
                 msgprint('Your inquiry is submited successfully. Thanks!');
 				$("#form-alert").attr('class', '');
                 $("#form-alert").addClass('success');
-                $("#form-alert").focus();
+               
 				
                 $(':input').val('');
                 $('input:checkbox').removeAttr('checked');
                 $('.supplier').show()
+                $("input[name='email']").focus();
+                $("#requestButton").focus();
 
             }
         });
