@@ -23,34 +23,34 @@ def get_data():
 			]
 		},
 		{
-			"label": _("Ven-Powery"),
+			"label": _("E-MMAP: Empowery Member Marketplace & Asset Page"),
 			"icon": "fa fa-print",
 			"items": [
 				{
 					"type": "doctype",
 					"name": "Service Category",
-					"label": _("Vendor Service Category"),
+					"label": _("Service Category"),
 					"description": _("Define Service Category"),
 					"hide_count": False
 				},
 				{
 					"type": "doctype",
 					"name": "Supplier Geo Location",
-					"label": _("Vendor Geo Location"),
+					"label": _("Service Regions"),
 					"description": _("Define Geo Location"),
 					"hide_count": False
 				},
 				{
 					"type": "doctype",
 					"name": "Vendor Carousel and Email template",
-					"label": _("Vendor Carousel & Email template"),
+					"label": _("Promo Carousel & Email Template"),
 					"description": _("Define Vendor Carousel & Offer email"),
 					"hide_count": True
 				},				
 				{
 					"type": "doctype",
 					"name": "Supplier",
-					"label": _("Vendor listing Settings & Content"),
+					"label": _("Supplier Partnership Details & Membership Perks"),
 					"description": _("Define Vendor Offer meta & content"),
 					"hide_count": True
 				}
