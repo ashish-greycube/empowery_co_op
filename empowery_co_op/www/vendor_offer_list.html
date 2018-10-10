@@ -225,14 +225,6 @@
 
 		</div>
         <div class=" form-group col-sm-6">
-            <label class="help">Company Name</label>
-            {% if frappe.session.user!="Guest" and (form_data!=0 ) %}
-            <input name="company_name" class="form-control"  type="text" value="{{ form_data.company }}" /> 
-            {%else%}
-            <input name="company_name" class="form-control"  type="text" placeholder="My Company" /> 
-            {% endif %}
-     	</div>
-        <div class=" form-group col-sm-6">
             <label class="help">Phone Number</label>
             {% if frappe.session.user!="Guest" and (form_data!=0 ) %}
             <input name="phone" class="form-control"  type="text" value="{{ form_data.phone }}" /> 
@@ -248,10 +240,13 @@
             {%else%}
             <input name="email" type="text" class="form-control"  placeholder="jane_doe@example.com" /> 
             {% endif %}
-			 <div id="form-alert" class="alert" style="display: none;"></div>
-            <button id="requestButton" class="btn btn-success btn-request reqBtn">{{_("Tell Me More!")}}</button><br />
+
         </div>
-       
+        <div class=" form-group col-sm-6">
+                <div id="form-alert" class="alert" style="display: none;"></div>
+                <button id="requestButton" class="btn btn-success btn-request reqBtn">{{_("Tell Me More!")}}</button>
+
+        </div>
     </div>
 
 

@@ -27,7 +27,6 @@ $(document).ready(function () {
         $("#form-alert").toggle(false);
 
 		$('[name="sender_name"]').removeClass('red');
-			$('[name="company_name"]').removeClass('red');
 			$('[name="email"]').removeClass('red');
 			$('[name="phone"]').removeClass('red');
 			
@@ -44,17 +43,15 @@ $(document).ready(function () {
 
         var args = {
             sender_name: $('[name="sender_name"]').val(),
-            company_name: $('[name="company_name"]').val(),
             email: $('[name="email"]').val(),
             phone: $('[name="phone"]').val()
         }
 
         // all mandatory
-        if (!(args.sender_name && args.company_name && args.email &&
+        if (!(args.sender_name && args.email &&
                 args.phone)) {
             msgprint("All fields are necessary. Please try again.");
 			$('[name="sender_name"]').addClass('red');
-			$('[name="company_name"]').addClass('red');
 			$('[name="email"]').addClass('red');
 			$('[name="phone"]').addClass('red');
 			$("#form-alert").attr('class', '');
@@ -81,8 +78,7 @@ $(document).ready(function () {
             is_guest = true
         }
         // compose the message
-        var message = "Company: " + args.company_name + "\n" +
-            "Name: " + args.sender_name + "\n" +
+        var message = "Name: " + args.sender_name + "\n" +
             "Email: " + args.email + "\n" +
             "Phone: " + args.phone + "\n" +
             "Is Guest? : " + is_guest + "\n"
@@ -115,7 +111,6 @@ $(document).ready(function () {
             method: 'empowery_co_op.www.vendor_offer_list.send_email',
             args: {
                 name: args.sender_name,
-                company: args.company_name,
                 email: args.email,
                 phone: args.phone,
                 is_guest: is_guest,

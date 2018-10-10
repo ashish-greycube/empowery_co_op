@@ -90,7 +90,7 @@ order by supplier.name,location.geo_location""",as_dict=1)
         supplier_type ='Affiliate Partner' order by name""",as_dict=1)
 
 @frappe.whitelist(allow_guest=True)
-def send_email(name,company,email,phone,is_guest,vendor_list):
+def send_email(name,email,phone,is_guest,vendor_list):
     vendor_offer_doc = frappe.get_single('Vendor Carousel and Email template')
     raw_subject=vendor_offer_doc.subject or ''
     raw_email=vendor_offer_doc.email or ''
@@ -102,8 +102,8 @@ def send_email(name,company,email,phone,is_guest,vendor_list):
     count=0
     for vendor in raw_vendor_list:
 
-        subject=raw_subject.replace('{sender_name}', name or "").replace('{sender_company}',company or "").replace('{sender_email}',email or "").replace('{sender_phone}',phone or "").replace('{sender_is_guest}',is_guest or "").replace('{vendor_name}',vendor or "")
-        email=raw_email.replace('{sender_name}', name or "").replace('{sender_company}',company or "").replace('{sender_email}',email or "").replace('{sender_phone}',phone or "").replace('{sender_is_guest}',is_guest or "").replace('{vendor_name}',vendor or "")
+        subject=raw_subject.replace('{sender_name}', name or "").replace('{sender_email}',email or "").replace('{sender_phone}',phone or "").replace('{sender_is_guest}',is_guest or "").replace('{vendor_name}',vendor or "")
+        email=raw_email.replace('{sender_name}', name or "").replace('{sender_email}',email or "").replace('{sender_phone}',phone or "").replace('{sender_is_guest}',is_guest or "").replace('{vendor_name}',vendor or "")
         vendor_email= frappe.db.sql("""select contact_email_for_offers from  `tabSupplier` where name=%s""",vendor,as_dict=1)
         outgoing_email_id = frappe.get_doc("Email Account", {"default_outgoing": "1"})
         if outgoing_email_id:
