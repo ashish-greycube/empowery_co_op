@@ -43,21 +43,21 @@ app_license = "MIT"
 # }
 
 web_include_css = [
-    "/assets/frappe/js/lib/slickgrid/slick.grid.css",
-    "/assets/frappe/js/lib/slickgrid/slick-default-theme.css",
-    "/assets/frappe/css/slickgrid.css"
+    "/assets/empowery_co_op/js/slickgrid/slick.grid.css",
+    "/assets/empowery_co_op/js/slickgrid/slick-default-theme.css",
+    "/assets/empowery_co_op/css/slickgrid.css"
 ]
 
 web_include_js = [
-    "/assets/frappe/js/lib/slickgrid/jquery.event.drag.js",
-    "/assets/frappe/js/lib/slickgrid/plugins/slick.cellrangedecorator.js",
-    "/assets/frappe/js/lib/slickgrid/plugins/slick.cellrangeselector.js",
-    "/assets/frappe/js/lib/slickgrid/plugins/slick.cellselectionmodel.js",
-    "/assets/frappe/js/lib/slickgrid/plugins/slick.cellexternalcopymanager.js",
-    "/assets/frappe/js/lib/slickgrid/slick.core.js",
-    "/assets/frappe/js/lib/slickgrid/slick.grid.js",
-    "/assets/frappe/js/lib/slickgrid/slick.formatters.js",
-    "/assets/frappe/js/lib/slickgrid/slick.dataview.js"
+    "/assets/empowery_co_op/js/slickgrid/jquery.event.drag.js",
+    "/assets/empowery_co_op/js/slickgrid/plugins/slick.cellrangedecorator.js",
+    "/assets/empowery_co_op/js/slickgrid/plugins/slick.cellrangeselector.js",
+    "/assets/empowery_co_op/js/slickgrid/plugins/slick.cellselectionmodel.js",
+    "/assets/empowery_co_op/js/slickgrid/plugins/slick.cellexternalcopymanager.js",
+    "/assets/empowery_co_op/js/slickgrid/slick.core.js",
+    "/assets/empowery_co_op/js/slickgrid/slick.grid.js",
+    "/assets/empowery_co_op/js/slickgrid/slick.formatters.js",
+    "/assets/empowery_co_op/js/slickgrid/slick.dataview.js"
 
 ]
 
