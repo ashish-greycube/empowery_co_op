@@ -10,9 +10,9 @@ def execute(filters=None):
 
 def get_columns():
 	columns = [
-		("Supplier") + ":Link/Supplier:270",
-		("# of Linked Customer") + ":Data:150",
-		("% of Engagement") + ":Data:150"
+		("Supplier") + ":Link/Supplier:530",
+		("# of Linked Customer") + ":Data:270",
+		("% of Engagement") + ":Data:270"
 	]
 	return columns
 

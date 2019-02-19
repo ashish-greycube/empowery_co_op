@@ -16,17 +16,18 @@ frappe.query_reports["Supplier Engagement"] = {
     })
 
   },
-  "formatter": function (row, cell, value, columnDef, dataContext, default_formatter) {
+  "formatter": function(value, row, column, data, default_formatter) {
+  // "formatter": function (row, cell, value, columnDef, dataContext,column,data, default_formatter) {
+    value = default_formatter(value, row, column, data);
 
-    value = default_formatter(row, cell, value, columnDef, dataContext);
-
-    if (columnDef.name == '% of Engagement') {
-      if (cell == 3) {
+    if (column.name == '% of Engagement') {
+      if (1==1) {
+        
         per_of_engagement = null
         href_start_index = value.search('\">');
         href_end_index = value.search('</a>');
         per_of_engagement = parseFloat(value.slice(href_start_index + 2, href_end_index))
-
+        console.log(per_of_engagement)
         if (per_of_engagement != null || per_of_engagement != '') {
 
           if ((per_of_engagement >= 0.0) && (per_of_engagement <= parseFloat(color_codes.yellow_start))) {

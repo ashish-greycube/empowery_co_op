@@ -1,0 +1,165 @@
+{% extends "templates/web.html" %} {% block breadcrumbs %} {% include "templates/includes/breadcrumbs.html" %} {% endblock%} 
+{% block header %}
+
+{% endblock %} 
+
+{% block page_content %}
+<style>
+    .myGrid {
+        background: white;
+        outline: 0;
+        border: 1px solid gray;
+    }
+    .cell-effort-driven {
+        text-align: center;
+    }
+</style>    
+<table >
+    <tr><td valign="top" >
+        <div><h3>Customer Cashback Report</h3></div>
+        <hr/>
+            <div style="padding:6px;">
+                <label>My Company:</label>
+                <select id="customer_companies" onchange="fill_grid()" >
+                </select>
+                <label style="float:right;"><a href="/me"> ☚ Back to Main Portal</a></label>
+                <button style="float:right;" id="download">Download CSV</button>
+                <br/><br/>
+                <div id="myGrid" style="width:1090px" class="my-grid"></div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<script>
+    var csv_data=[];
+        function to_csv(data) {
+	var res = [];
+	$.each(data, function(i, row) {
+		row = $.map(row, function(col) {
+			if (col === null || col === undefined) col = '';
+			return typeof col === "string" ? ('"' + $('<i>').html(col.replace(/"/g, '""')).text() + '"') : col;
+		});
+		res.push(row.join(","));
+	});
+	return res.join("\n");
+};
+function formatter(row, cell, value, columnDef, dataContext) {return value; }
+function CheckmarkFormatter(row, cell, value, columnDef, dataContext) {return value ? "<img src='tick.png'>" : '<i class="octicon octicon-x"></i>';}
+function fill_grid(){
+    var customer_companies = document.getElementById("customer_companies").value;
+    frappe.call({
+                    method: "empowery_co_op.customer_cashback_report.execute",
+                    args: {
+                        useremail: frappe.session.user,
+                        customer_company:customer_companies
+                    },
+                    callback: function (rdata) {
+                        if (rdata.message != undefined){
+                            data=rdata.message
+                            for (var i = 0; i < data.length; i++) {
+                                data[i] = {
+                                    num : i+1,
+                                    Customer: data[i][0],
+                                    Grand_Total_Cashback: data[i][1],
+                                    Month_Year: data[i][2],
+                                };} 
+                                console.log(data)     
+                             grid = new Slick.Grid("#myGrid", data, columns, options); 
+                             csv_data=to_csv(data);
+console.log(to_csv(data));
+                            }
+                        else{frappe.msgprint("Logged in user is not a valid empowery customer")}
+                    }});
+}
+function get_company_list(){
+          frappe.call({
+              method:'empowery_co_op.customer_cashback_report.get_session_customer',
+              args:{useremail:frappe.session.user},
+              callback: function(r) {
+							if(r.message) {
+                                data=r.message
+                                var selectBox = document.getElementById('customer_companies');
+                                for(var i = 0, l = data.length; i < l; i++){
+                                    var option = data[i];
+                                    if (i==0) {option.selected=1} else {option.selected=0}
+                                        selectBox.options.add( new Option(option.customer, option.customer, option.selected) );
+                                }
+                                if (data.length==1) {selectBox.disabled = true}
+                            }}});}
+var grid;
+var columns = [
+        {id: "sel", name: "#", field: "num",  width: 40},
+        { id: "Customer", name: "Customer", width: 200, minWidth: 200, maxWidth: 300, field: "Customer" },
+        { id: "Grand_Total_Cashback", name: "Cashback Grand Total", field: "Grand_Total_Cashback",width: 200, minWidth: 200, maxWidth: 300 },
+        {id: "Month_Year", name: "Month & Year", field: "Month_Year",width: 200, minWidth: 200, maxWidth: 300 }];
+    
+var options = {
+            enableCellNavigation: true,
+            enableColumnReorder: false,
+            autoHeight: true
+        };
+var data = [];
+
+
+frappe.ready(function () {
+
+
+
+    var customer_companies = document.getElementById("customer_companies").value;
+            if (customer_companies==''){ get_company_list();}
+            fill_grid();
+
+            $("#download").click(function() {
+            window.open("data:text/csv;charset=utf-8," + escape(csv_data))
+            });
+
+function JSON2CSV(objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+
+    var str = '';
+    var line = '';
+
+    if ($("#labels").is(':checked')) {
+        var head = array[0];
+        if ($("#quote").is(':checked')) {
+            for (var index in array[0]) {
+                var value = index + "";
+                line += '"' + value.replace(/"/g, '""') + '",';
+            }
+        } else {
+            for (var index in array[0]) {
+                line += index + ',';
+            }
+        }
+
+        line = line.slice(0, -1);
+        str += line + '\r\n';
+    }
+
+    for (var i = 0; i < array.length; i++) {
+        var line = '';
+
+        if ($("#quote").is(':checked')) {
+            for (var index in array[i]) {
+                var value = array[i][index] + "";
+                line += '"' + value.replace(/"/g, '""') + '",';
+            }
+        } else {
+            for (var index in array[i]) {
+                line += array[i][index] + ',';
+            }
+        }
+
+        line = line.slice(0, -1);
+        str += line + '\r\n';
+    }
+    return str;
+    
+}
+
+            
+                     });
+
+</script>
+{% endblock %}
