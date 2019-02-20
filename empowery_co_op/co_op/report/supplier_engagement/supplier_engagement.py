@@ -3,18 +3,34 @@
 
 from __future__ import unicode_literals
 import frappe
+from frappe import _
 
 def execute(filters=None):
 	columns, data = get_columns(), get_data()
 	return columns, data
 
 def get_columns():
-	columns = [
-		("Supplier") + ":Link/Supplier:530",
-		("# of Linked Customer") + ":Data:270",
-		("% of Engagement") + ":Data:270"
-	]
-	return columns
+		return [
+		{
+			"fieldname": "Supplier",
+			"label": _("Supplier"),
+			"fieldtype": "Link",
+			"options":"Supplier",
+			"width": 300
+		},
+		{
+			"fieldname": "# of Linked Customer",
+			"label": _("# of Linked Customer"),
+			"fieldtype": "Data",
+			"width": 150
+		},
+		{
+			"fieldname": "% of Engagement",
+			"label": _("% of Engagement"),
+			"fieldtype": "Data",
+			"width": 150
+		}]
+	
 
 def get_data():
 	data = frappe.db.sql("""
