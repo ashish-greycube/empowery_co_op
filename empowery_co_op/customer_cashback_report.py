@@ -3,7 +3,8 @@
 
 from __future__ import unicode_literals
 import frappe
-from frappe.utils import cstr
+from frappe.utils import cstr,fmt_money
+import erpnext
 
 @frappe.whitelist()
 def execute(useremail,customer_company,filter_year):
@@ -25,20 +26,21 @@ def execute(useremail,customer_company,filter_year):
 	customer=useremail[0]["customer"]
 
 	total_row =0.0
-	
+	cur=erpnext.get_default_currency()
 	for d in linked_list:
 		row = []
-		row = [d.Customer,d.Grand_Total_Cashback,d.Month_Year]
+		row = [d.Customer,fmt_money(d.Grand_Total_Cashback, precision=2,currency=cur),d.Month_Year]
+		
 		total_row += d.Grand_Total_Cashback 
 		data.append(row)
 	data.append([])
-	data.append(["Cashback Grand Total",total_row,""])
+	data.append(["Cashback Grand Total",fmt_money(total_row, precision=2,currency=cur),""])
 	return  data
 
 def get_columns():
 	columns = [
 		("Customer") + ":Data:150",
-		("Grand Total Cashback") + ":Data:120",
+		("Grand Total Cashback") + ":Currency:120",
 		("Month-Year") + ":Data:100"
 	]
 	return columns

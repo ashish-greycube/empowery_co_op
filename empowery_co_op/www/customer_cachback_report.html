@@ -21,7 +21,7 @@ endblock%}
     <tr>
         <td valign="top">
             <div>
-                <h3>Customer Cashback Report</h3>
+                <h3>Member Cashback Report</h3>
             </div>
             <hr />
             <div style="padding:6px;">
@@ -41,6 +41,7 @@ endblock%}
 </table>
 
 <script>
+
     var csv_data = [];
 
     function to_csv(data) {
@@ -153,7 +154,14 @@ endblock%}
             }
         });
     }
+    function download_csv() {
 
+var hiddenElement = document.createElement('a');
+hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv_data);
+hiddenElement.target = '_blank';
+hiddenElement.download = 'people.csv';
+hiddenElement.click();
+}
 
     var grid;
     var columns = [{
@@ -213,8 +221,17 @@ endblock%}
         fill_grid();
 
         $("#download").click(function () {
-            window.open("data:text/csv;charset=utf-8," + escape(csv_data))
-        });
+
+var a = document.createElement('a');
+a.href = 'data:attachment/csv,' + encodeURIComponent(csv_data);
+a.download = "cashback_report.csv";
+a.target = "_blank";
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+
+});
+
     });
 </script>
 {% endblock %}
