@@ -15,24 +15,66 @@ endblock%}
     .cell-effort-driven {
         text-align: center;
     }
-    
+	.page_content{
+		padding-top:0;
+	}
+    .img-dollar{
+		max-width: 30px !important;
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.bttn{
+		background: #ffffff;
+		border: 0px #ddd solid;
+		padding: 0;
+		margin: 0 5px 0px 0;
+		vertical-align: middle;
+		margin-top: 0px;
+		display: inline-block;
+
+	}
+	label.labelcon{
+		padding-left: 8px;
+	}
+	label{
+		font-weight:normal;
+	}
+	.page-content hr {
+		margin-top: 8px;
+    	margin-bottom: 8px;
+	}
+	.page-content h3 {
+		margin: 0;
+	}
+	.slick-header-columns{
+		background: none;
+   		 border: none;	
+	}
+	.slick-header-columns .slick-header-column{
+		background-color: #F7FAFC;
+		border-bottom: 1px solid #d1d8dd;
+	}
+	.l2.r2, .slick-header-columns .slick-header-column:nth-child(3){
+		text-align:right;
+	}
 </style>
 <table>
     <tr>
         <td valign="top">
             <div>
-                <h3>Member Cashback Report</h3>
+                
+                <label style="float:right; margin:0"><a href="/me" class="bttn" title="Back"> <img src="/assets/empowery_co_op/img/noun_arrow.png" class="img-dollar" /> </a></label>
+                <button style="float:right;" class="bttn" id="download" title="Download CSV"> <img src="/assets/empowery_co_op/img/nounCSVFile_2049717.png" class="img-dollar" /> </button>
+                <h3><img src="/assets/empowery_co_op/img/noun_dollar.png" class="img-dollar" /> Member Cashback Report</h3>
             </div>
             <hr />
             <div style="padding:6px;">
                 <label>Company:</label>
                 <select id="customer_companies" onchange="fill_grid()">
                 </select>
-                <label>Year:</label>
+                <label class="labelcon">Year:</label>
                 <select id="filter_year" onchange="fill_grid()">
                 </select>
-                <label style="float:right;"><a href="/me"> ☚ Back to Main Portal</a></label>
-                <button style="float:right;" id="download">Download CSV</button>
                 <br /><br />
                 <div id="myGrid" style="width:1090px" class="my-grid"></div>
             </div>
@@ -157,10 +199,10 @@ endblock%}
     function download_csv() {
 
 var hiddenElement = document.createElement('a');
-hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv_data);
-hiddenElement.target = '_blank';
-hiddenElement.download = 'people.csv';
-hiddenElement.click();
+	hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv_data);
+	hiddenElement.target = '_blank';
+	hiddenElement.download = 'people.csv';
+	hiddenElement.click();
 }
 
     var grid;
@@ -173,26 +215,26 @@ hiddenElement.click();
         {
             id: "Customer",
             name: "Customer",
-            width: 200,
-            minWidth: 200,
+            width: 300,
+            minWidth: 300,
             maxWidth: 300,
-            field: "Customer"
+			field: "Customer"
         },
         {
             id: "Grand_Total_Cashback",
             name: "Cashback Total",
             field: "Grand_Total_Cashback",
-            width: 200,
-            minWidth: 200,
+            width: 100,
+            minWidth: 100,
             maxWidth: 300
         },
         {
             id: "Month_Year",
             name: "Month & Year",
             field: "Month_Year",
-            width: 200,
-            minWidth: 200,
-            maxWidth: 300
+            width: 100,
+            minWidth: 100,
+            maxWidth: 200
         }
     ];
 
