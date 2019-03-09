@@ -46,8 +46,6 @@ def get_columns():
 	return columns
 
 def get_linked(customer_company,filter_year):
-	print customer_company
-	print filter_year
 	return frappe.db.sql("""SELECT SI.customer_name as Customer,  sum(SIT.base_net_amount) as Grand_Total_Cashback, YEAR(SI.posting_date),
 CONCAT( MONTHNAME(SI.posting_date),"-",YEAR(SI.posting_date) ) AS Month_Year 
 from `tabSales Invoice` as SI inner join `tabSales Invoice Item` as SIT ON SIT.parent = SI.name 

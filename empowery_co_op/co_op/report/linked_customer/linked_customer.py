@@ -7,7 +7,6 @@ import frappe
 def execute(filters):
 	columns, data = [], []
 	columns = get_columns()
-	print filters
 	if filters=={}:
 		return columns, data
 	

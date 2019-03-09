@@ -29,7 +29,6 @@ def execute(useremail):
         row = []
         row = [customer.customer_name,customer.customer_primary_contact,customer.mobile_no,customer.email_id,customer.linked]
         data.append(row)
-    print data
     return data
 
 
